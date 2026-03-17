@@ -15,8 +15,8 @@ const SignUp = () => {
   return (
     <Layout className="py-10 md:py-12 lg:py-14 flex flex-col items-center">
       {step === "Email" && <EmailStep />}
-      {step === "Register" && (
-        <RegisterStep afterRegister={() => setStep("Avatar")} />
+      {step === "Register" && token && (
+        <RegisterStep afterRegister={() => setStep("Avatar")} token={token} />
       )}
       {step === "Avatar" && <AvatarStep />}
     </Layout>

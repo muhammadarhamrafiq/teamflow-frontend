@@ -1,17 +1,23 @@
 import { CameraAdd01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 import { Button } from "../../../components/ui/button";
+import { uploadAvatar } from "../apis";
+import { useAuthStore } from "../../../providers/user";
+import UploadOverlay from "../../../components/UploadOverlay";
+import type { InputFieldProps } from "..";
 
 const AvatarStep = () => {
+  const { setUser } = useAuthStore.getState();
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
 
-  // Use a ref for the counter to avoid stale closures in event listeners
   const dragCounter = useRef(0);
+  const navigate = useNavigate();
 
   const handleUpload = (file?: File) => {
     if (!file) return;
@@ -19,9 +25,24 @@ const AvatarStep = () => {
     setPreview(URL.createObjectURL(file));
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    if (!file) return;
+
     setLoading(true);
-    // Upload Api
+    const res = await uploadAvatar(file);
+    if (res.success) {
+      const data = res.data!;
+      setUser({
+        id: data.user.id,
+        name: data.user.name,
+        email: data.user.email,
+        avatarUrl: data.user.avatarUrl,
+      });
+      navigate("/dashboard");
+    } else {
+      toast.error(res.error);
+    }
+
     setLoading(false);
   };
 
@@ -75,30 +96,53 @@ const AvatarStep = () => {
 
   return (
     <>
-      {/* Overlay - Add pointer-events-none to children to be safe */}
-      {dragActive && (
-        <div className="fixed inset-0 bg-foreground/70 text-background text-lg z-1000 flex items-center justify-center pointer-events-none">
-          <div className="p-10 border-4 border-dashed border-background rounded-2xl">
-            Drop the image to Upload it
-          </div>
-        </div>
-      )}
+      {dragActive && <UploadOverlay />}
 
+      <Header />
+
+      <AvatarUploader value={preview ?? ""} onChange={(e) => handleUpload(e.target.files?.[0])} />
+      {/* Submit Button */}
+      <Button
+        className="w-80 mt-6 h-10 text-md cursor-pointer hover:scale-95 transition-transform"
+        onClick={onSubmit}
+        disabled={loading || !file}
+      >
+        {loading ? "Uploading..." : "Continue"}
+      </Button>
+      <Link
+        to="/dashboard"
+        className="mt-2 text-sm hover:text-primary hover:underline"
+      >
+        Skip for Now
+      </Link>
+    </>
+  );
+};
+
+const Header = () => {
+  return (
+    <>
       <h2 className="text-xl font-bold text-foreground w-80 text-center">
         Upload Avatar
       </h2>
       <p className="w-80 text-xs text-secondary-foreground text-center">
         Upload profile picture you can always change it later
       </p>
+    </>
+  );
+};
 
+const AvatarUploader = ({onChange, value}: InputFieldProps) => {
+  return (
+    <>
       {/* Preview */}
       <label
         htmlFor="avatar"
         className="w-80 h-80 border overflow-hidden rounded-full mt-2 cursor-pointer text-ring hover:border-primary hover:text-primary transition-colors flex items-center justify-center"
       >
-        {preview ? (
+        {value !== "" ? (
           <img
-            src={preview}
+            src={value}
             alt="avatar-preview"
             className="w-full h-full object-cover"
           />
@@ -116,23 +160,8 @@ const AvatarStep = () => {
         id="avatar"
         accept="image/*"
         className="sr-only"
-        onChange={(e) => handleUpload(e.target.files?.[0])}
+        onChange={onChange}
       />
-
-      {/* Submit Button */}
-      <Button
-        className="w-80 mt-6 h-10 text-md cursor-pointer hover:scale-95 transition-transform"
-        onClick={onSubmit}
-        disabled={loading || !file}
-      >
-        {loading ? "Uploading..." : "Continue"}
-      </Button>
-      <Link
-        to="/dashboard"
-        className="mt-2 text-sm hover:text-primary hover:underline"
-      >
-        Skip for Now
-      </Link>
     </>
   );
 };

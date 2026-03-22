@@ -74,12 +74,14 @@ const RegisterStep = ({
         value={name}
         onChange={(e) => setName(e.target.value)}
         error={inputErrors.name}
+        disabled={loading}
       />
 
       <PasswordField
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         error={inputErrors.password}
+        disabled={loading}
       />
 
       {/* Submit Button */}
@@ -109,7 +111,7 @@ const Header = () => {
   );
 };
 
-const NameField = ({ value, onChange, error }: InputFieldProps) => {
+const NameField = ({ value, onChange, error, disabled }: InputFieldProps) => {
   return (
     <>
       <label htmlFor="name" className="sr-only">
@@ -124,6 +126,7 @@ const NameField = ({ value, onChange, error }: InputFieldProps) => {
         onChange={onChange}
         aria-invalid={error ? true : false}
         aria-describedby={error ? "nameDescription" : undefined}
+        disabled={disabled}
       />
       {error && (
         <p id="nameDescription" className="w-80 text-xs text-destructive mt-1">

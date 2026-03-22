@@ -3,8 +3,8 @@ import { Link } from "react-router";
 import { toast } from "sonner";
 import Logo from "../../../assets/icons/Logo";
 import { Button } from "../../../components/ui/button";
-import { Input } from "../../../components/ui/input";
 import { submitEmail } from "../apis";
+import EmailInput from "./ui/Email";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -41,10 +41,9 @@ const EmailStep = () => {
 
       <EmailInput
         value={email}
-        hasError={emailError}
+        error={emailError}
         disabled={loading}
         onChange={(e) => setEmail(e.target.value)}
-        onSubmit={onSubmit}
       />
 
       <Button
@@ -85,51 +84,6 @@ const Header = () => {
       <p className="w-80 mt-4 text-sm text-center text-secondary-foreground">
         Welcome to Teamflow and start managing your task and projects with us.
       </p>
-    </>
-  );
-};
-
-interface EmailInputProps {
-  value: string;
-  hasError: boolean;
-  disabled?: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: () => void;
-}
-
-const EmailInput = ({
-  value,
-  hasError,
-  disabled,
-  onChange,
-  onSubmit,
-}: EmailInputProps) => {
-  return (
-    <>
-      <label htmlFor="email" className="sr-only">
-        Email
-      </label>
-
-      <Input
-        type="email"
-        id="email"
-        className="w-80 mt-12 h-10 hover:shadow"
-        placeholder="Enter your email"
-        value={value}
-        disabled={disabled}
-        onChange={onChange}
-        aria-invalid={hasError}
-        aria-describedby={hasError ? "emailDescription" : undefined}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") onSubmit();
-        }}
-      />
-
-      {hasError && (
-        <p id="emailDescription" className="w-80 text-xs text-destructive mt-1">
-          Valid email is required
-        </p>
-      )}
     </>
   );
 };

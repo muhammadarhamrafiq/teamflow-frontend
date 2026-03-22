@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import { SignUp } from "../features";
+import { SignIn, SignUp } from "../features";
 
 const router = createBrowserRouter([
   {
@@ -12,7 +12,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/sign-in",
-    element: "Sign In Page",
+    Component: SignIn,
+  },
+  {
+    path: "/forgot-password",
+    element: "ForgotPassword Page",
   },
   {
     path: "/dashboard",

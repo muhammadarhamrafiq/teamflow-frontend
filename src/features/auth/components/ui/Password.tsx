@@ -8,7 +8,12 @@ import {
   InputGroupInput,
 } from "../../../../components/ui/input-group";
 
-const PasswordField = ({ value, onChange, error }: InputFieldProps) => {
+const PasswordField = ({
+  value,
+  onChange,
+  error,
+  disabled,
+}: InputFieldProps) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
@@ -23,6 +28,7 @@ const PasswordField = ({ value, onChange, error }: InputFieldProps) => {
           onChange={onChange}
           aria-invalid={error ? true : false}
           aria-describedby={error ? "passwordDescription" : undefined}
+          disabled={disabled}
         />
         <InputGroupAddon align="inline-end">
           <HugeiconsIcon

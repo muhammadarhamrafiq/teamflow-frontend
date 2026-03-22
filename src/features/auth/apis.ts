@@ -21,11 +21,20 @@ export const registerUser = apiHandler(
       name,
       password,
     });
-    return res;
+    return res.data;
   },
 );
 
-type UploadAvatarResponse = RegisterResponse;
+interface UploadAvatarResponse {
+  message: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    avatarUrl: string;
+    updatedAt: Date;
+  };
+}
 
 export const uploadAvatar = apiHandler(async (avatar: File) => {
   const formdata = new FormData();
@@ -39,3 +48,16 @@ export const uploadAvatar = apiHandler(async (avatar: File) => {
 
   return res.data;
 });
+
+type LoginResponse = RegisterResponse;
+
+export const requestSignIn = apiHandler(
+  async (email: string, password: string) => {
+    const res = await api.post<LoginResponse>("/auth/sign-in", {
+      email,
+      password,
+    });
+
+    return res.data;
+  },
+);

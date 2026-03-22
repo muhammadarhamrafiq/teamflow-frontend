@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { useSearchParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router";
+import { useAuthStore } from "../../providers/user";
 import AvatarStep from "./components/AvatarStep";
 import EmailStep from "./components/EmailStep";
 import Layout from "./components/Layout";
@@ -11,6 +12,13 @@ const SignUp = () => {
   const [params] = useSearchParams();
   const token = params.get("token");
   const [step, setStep] = useState<Step>(token ? "Register" : "Email");
+  const { user } = useAuthStore.getState();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate("/dashboard");
+  });
 
   return (
     <Layout className="py-10 md:py-12 lg:py-14 flex flex-col items-center">

@@ -1,25 +1,27 @@
-import { EyeIcon, EyeOff } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { useState } from "react";
-import type { InputFieldProps } from "../..";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "../../../../components/ui/input-group";
+} from "@/components/ui/input-group";
+import { EyeIcon, EyeOff } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { useState } from "react";
+
+import type { InputFieldProps } from "../../utils";
 
 const PasswordField = ({
   value,
   onChange,
   error,
   disabled,
+  className,
 }: InputFieldProps) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
     <>
       <label htmlFor="password" className="sr-only"></label>
-      <InputGroup className="w-80 h-10 mt-2">
+      <InputGroup className={"w-80 h-10 mt-2 " + className}>
         <InputGroupInput
           id="password"
           type={passwordVisible ? "text" : "password"}

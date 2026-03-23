@@ -1,13 +1,13 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/providers/user";
 import { useState } from "react";
 import { Link } from "react-router";
-import { Button } from "../../../components/ui/button";
-import { Input } from "../../../components/ui/input";
-import PasswordField from "./ui/Password";
-
 import { toast } from "sonner";
-import type { InputFieldProps } from "..";
-import { useAuthStore } from "../../../providers/user";
-import { registerUser } from "../apis";
+
+import type { InputFieldProps } from "../utils";
+import { registerUser } from "../utils/apis";
+import PasswordField from "./ui/Password";
 
 interface InputErrors {
   name?: string;

@@ -1,13 +1,14 @@
+import { Button } from "@/components/ui/button";
+import UploadOverlay from "@/components/UploadOverlay";
+import { useAuthStore } from "@/providers/user";
 import { CameraAdd01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
-import { Button } from "../../../components/ui/button";
-import { uploadAvatar } from "../apis";
-import { useAuthStore } from "../../../providers/user";
-import UploadOverlay from "../../../components/UploadOverlay";
-import type { InputFieldProps } from "..";
+
+import type { InputFieldProps } from "../utils";
+import { uploadAvatar } from "../utils/apis";
 
 const AvatarStep = () => {
   const { setUser } = useAuthStore.getState();
@@ -100,7 +101,10 @@ const AvatarStep = () => {
 
       <Header />
 
-      <AvatarUploader value={preview ?? ""} onChange={(e) => handleUpload(e.target.files?.[0])} />
+      <AvatarUploader
+        value={preview ?? ""}
+        onChange={(e) => handleUpload(e.target.files?.[0])}
+      />
       {/* Submit Button */}
       <Button
         className="w-80 mt-6 h-10 text-md cursor-pointer hover:scale-95 transition-transform"
@@ -132,7 +136,7 @@ const Header = () => {
   );
 };
 
-const AvatarUploader = ({onChange, value}: InputFieldProps) => {
+const AvatarUploader = ({ onChange, value }: InputFieldProps) => {
   return (
     <>
       {/* Preview */}

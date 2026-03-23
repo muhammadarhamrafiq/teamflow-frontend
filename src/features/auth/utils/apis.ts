@@ -1,4 +1,4 @@
-import api, { apiHandler } from "../../utils/api";
+import api, { apiHandler } from "@/utils/api";
 
 export const submitEmail = apiHandler(async (email: string) => {
   const res = await api.post("/auth/register", { email });
@@ -58,6 +58,21 @@ export const requestSignIn = apiHandler(
       password,
     });
 
+    return res.data;
+  },
+);
+
+export const forgotPassword = apiHandler(async (email: string) => {
+  const res = await api.post("/auth/reset-password", {
+    email,
+  });
+
+  return res.data;
+});
+
+export const resetPassword = apiHandler(
+  async (token: string, password: string) => {
+    const res = await api.patch(`/users/password?token=${token}`, { password });
     return res.data;
   },
 );

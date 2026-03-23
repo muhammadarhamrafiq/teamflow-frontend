@@ -1,10 +1,12 @@
+import Logo from "@/assets/icons/Logo";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";
-import Logo from "../../../assets/icons/Logo";
-import { Button } from "../../../components/ui/button";
-import { submitEmail } from "../apis";
+
+import { submitEmail } from "../utils/apis";
 import EmailInput from "./ui/Email";
+import HeaderWithLogo from "./ui/HeaderWithLogo";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -37,7 +39,11 @@ const EmailStep = () => {
 
   return (
     <>
-      <Header />
+      <HeaderWithLogo
+        description={
+          "Welcome to Teamflow and start managing your task and projects with us."
+        }
+      />
 
       <EmailInput
         value={email}
@@ -76,25 +82,13 @@ const EmailStep = () => {
   );
 };
 
-const Header = () => {
-  return (
-    <>
-      <Logo size={60} />
-      <h1 className="text-4xl font-bold text-foreground">Teamflow</h1>
-      <p className="w-80 mt-4 text-sm text-center text-secondary-foreground">
-        Welcome to Teamflow and start managing your task and projects with us.
-      </p>
-    </>
-  );
-};
-
 const Footer = () => {
   return (
     <p className="mt-8 text-xs">
       Already have an account?
       <Link
         className="text-primary hover:text-foreground hover:underline"
-        to="/sign-in"
+        to="/account/login"
       >
         {" "}
         Sign In

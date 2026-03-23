@@ -1,7 +1,13 @@
-import type { InputFieldProps } from "../..";
 import { Input } from "../../../../components/ui/input";
+import type { InputFieldProps } from "../../utils";
 
-const EmailInput = ({ value, error, disabled, onChange }: InputFieldProps) => {
+const EmailInput = ({
+  value,
+  error,
+  disabled,
+  onChange,
+  className,
+}: InputFieldProps) => {
   return (
     <>
       <label htmlFor="email" className="sr-only">
@@ -11,7 +17,7 @@ const EmailInput = ({ value, error, disabled, onChange }: InputFieldProps) => {
       <Input
         type="email"
         id="email"
-        className="w-80 mt-12 h-10 hover:shadow"
+        className={"w-80 mt-12 h-10 hover:shadow " + className}
         placeholder="Enter your email"
         value={value}
         disabled={disabled}

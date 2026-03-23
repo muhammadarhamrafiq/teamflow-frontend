@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import { SignIn, SignUp } from "../features";
+import { Account } from "../features";
 
 const router = createBrowserRouter([
   {
@@ -7,16 +7,26 @@ const router = createBrowserRouter([
     element: "Landing Page Not Developed",
   },
   {
-    path: "/sign-up",
-    Component: SignUp,
-  },
-  {
-    path: "/sign-in",
-    Component: SignIn,
-  },
-  {
-    path: "/forgot-password",
-    element: "ForgotPassword Page",
+    path: "/account",
+    Component: Account.Layout,
+    children: [
+      {
+        path: "register",
+        Component: Account.SignUp,
+      },
+      {
+        path: "login",
+        Component: Account.SignIn,
+      },
+      {
+        path: "forgot-password",
+        Component: Account.ForgotPassword,
+      },
+      {
+        path: "verify-email",
+        element: "Verify Email Page",
+      },
+    ],
   },
   {
     path: "/dashboard",

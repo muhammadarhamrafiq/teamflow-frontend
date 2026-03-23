@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import Logo from "@/assets/icons/Logo";
+import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/providers/user";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
-import Logo from "../../assets/icons/Logo";
-import { Button } from "../../components/ui/button";
-import { useAuthStore } from "../../providers/user";
-import { requestSignIn } from "./apis";
-import Layout from "./components/Layout";
-import EmailInput from "./components/ui/Email";
-import PasswordField from "./components/ui/Password";
+
+import EmailInput from "../components/ui/Email";
+import PasswordField from "../components/ui/Password";
+import { requestSignIn } from "../utils/apis";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -32,13 +32,9 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [inputErrors, setInputErrors] = useState<InputErrors>({});
-  const { setUser, user } = useAuthStore.getState();
+  const { setUser } = useAuthStore.getState();
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user) navigate("/dashboard");
-  });
 
   const onSubmit = async () => {
     setLoading(true);
@@ -65,7 +61,7 @@ const SignIn = () => {
   };
 
   return (
-    <Layout className="py-10 md:py-12 lg:py-14 flex flex-col items-center">
+    <>
       <Header />
 
       <EmailInput
@@ -90,14 +86,14 @@ const SignIn = () => {
         {loading ? "Sending..." : "Login"}
       </Button>
       <Link
-        to="/forgot-password"
+        to="/account/forgot-password"
         className="text-sm mt-2 hover:underline hover:text-primary"
       >
         Forgot Password
       </Link>
 
       <Footer />
-    </Layout>
+    </>
   );
 };
 
@@ -119,7 +115,7 @@ const Footer = () => {
       Don't have an account?
       <Link
         className="text-primary hover:text-foreground hover:underline"
-        to="/sign-up"
+        to="/account/register"
       >
         {" "}
         Sign Up

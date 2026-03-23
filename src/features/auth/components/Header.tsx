@@ -1,4 +1,4 @@
-import Logo from "../../../assets/icons/Logo";
+import Logo from "@/assets/icons/Logo";
 
 const Header = () => {
   return (

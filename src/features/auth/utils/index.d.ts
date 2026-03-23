@@ -3,4 +3,5 @@ export interface InputFieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string | boolean;
   disabled?: boolean;
+  className?: string;
 }

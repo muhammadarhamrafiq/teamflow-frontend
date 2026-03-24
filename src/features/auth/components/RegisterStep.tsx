@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useAuthStore } from "@/providers/user";
+import { useAuthStore } from "@/app/providers/user";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";

@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import UploadOverlay from "@/components/UploadOverlay";
-import { useAuthStore } from "@/providers/user";
+import { useAuthStore } from "@/app/providers/user";
+import { Button } from "@/shared/components/ui/button";
+import UploadOverlay from "@/shared/components/UploadOverlay";
 import { CameraAdd01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useRef, useState } from "react";

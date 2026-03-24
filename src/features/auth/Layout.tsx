@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/providers/user";
+import { useAuthStore } from "@/app/providers/user";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
 import workflow from "./assets/workflow.jpg";

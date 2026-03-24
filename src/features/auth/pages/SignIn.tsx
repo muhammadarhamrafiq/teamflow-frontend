@@ -1,6 +1,6 @@
-import Logo from "@/assets/icons/Logo";
-import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/providers/user";
+import { useAuthStore } from "@/app/providers/user";
+import Logo from "@/shared/assets/icons/Logo";
+import { Button } from "@/shared/components/ui/button";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";

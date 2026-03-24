@@ -1,4 +1,4 @@
-import api, { apiHandler } from "@/utils/api";
+import api, { apiHandler } from "@/shared/utils/api";
 
 export const submitEmail = apiHandler(async (email: string) => {
   const res = await api.post("/auth/register", { email });

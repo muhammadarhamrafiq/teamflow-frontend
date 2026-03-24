@@ -1,5 +1,5 @@
-import Logo from "@/assets/icons/Logo";
-import { Button } from "@/components/ui/button";
+import Logo from "@/shared/assets/icons/Logo";
+import { Button } from "@/shared/components/ui/button";
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";

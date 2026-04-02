@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import axios from "axios";
-=======
 import type { InternalAxiosRequestConfig } from "axios";
 import axios, { AxiosError } from "axios";
 
@@ -10,7 +7,6 @@ declare module "axios" {
     _retry?: boolean;
   }
 }
->>>>>>> 6320c31 (chore: cleaned the architecture)
 
 type ApiResponse<T> = {
   success: boolean;
@@ -18,12 +14,9 @@ type ApiResponse<T> = {
   error?: string;
 };
 
-<<<<<<< HEAD
-=======
 /**
  * Api Handler
  */
->>>>>>> 6320c31 (chore: cleaned the architecture)
 export const apiHandler = <T, A extends unknown[] = []>(
   fn: (...args: A) => Promise<T>,
 ) => {
@@ -45,13 +38,6 @@ export const apiHandler = <T, A extends unknown[] = []>(
   };
 };
 
-<<<<<<< HEAD
-const api = axios.create();
-const apiServer = import.meta.env.VITE_SERVER_URL;
-
-api.interceptors.request.use((config) => {
-  if (!config.url?.startsWith("http")) {
-=======
 const apiServer = import.meta.env.VITE_SERVER_URL;
 
 const api = axios.create({
@@ -68,15 +54,11 @@ const refreshApi = axios.create({
  */
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   if (config.url && !config.url.startsWith("http")) {
->>>>>>> 6320c31 (chore: cleaned the architecture)
     config.url = `${apiServer}${config.url}`;
   }
   return config;
 });
 
-<<<<<<< HEAD
-api.defaults.withCredentials = true;
-=======
 /**
  * Response interceptor: handle 401 + refresh token
  */
@@ -110,6 +92,5 @@ api.interceptors.response.use(
 async function refreshToken() {
   await refreshApi.post("/auth/refresh");
 }
->>>>>>> 6320c31 (chore: cleaned the architecture)
 
 export default api;

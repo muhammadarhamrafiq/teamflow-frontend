@@ -1,13 +1,6 @@
 import { useAuthStore } from "@/app/providers/user";
 import { Button } from "@/shared/components/ui/button";
-<<<<<<< HEAD
-import UploadOverlay from "@/shared/components/UploadOverlay";
-import { CameraAdd01Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { useEffect, useRef, useState } from "react";
-=======
 import { useState } from "react";
->>>>>>> 6320c31 (chore: cleaned the architecture)
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 

@@ -11,7 +11,7 @@ const Layout = () => {
 
   useEffect(() => {
     if (user) navigate("/dashboard");
-  });
+  }, [navigate, user]);
 
   return (
     <div className="flex">

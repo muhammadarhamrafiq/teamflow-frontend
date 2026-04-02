@@ -32,7 +32,7 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [inputErrors, setInputErrors] = useState<InputErrors>({});
-  const { setUser } = useAuthStore.getState();
+  const setUser = useAuthStore((state) => state.setUser);
 
   const navigate = useNavigate();
 
@@ -66,14 +66,18 @@ const SignIn = () => {
 
       <EmailInput
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setEmail(e.target.value)
+        }
         disabled={loading}
         error={inputErrors.email}
       />
 
       <PasswordField
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setPassword(e.target.value)
+        }
         disabled={loading}
         error={inputErrors.password}
       />

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Input } from "../../../../shared/components/ui/input";
+=======
+import { Input } from "@/shared/components/ui/input";
+>>>>>>> 6320c31 (chore: cleaned the architecture)
 import type { InputFieldProps } from "../../utils";
 
 const EmailInput = ({

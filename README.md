@@ -1,73 +1,72 @@
-# React + TypeScript + Vite
+# Teamflow Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Abstract
+Teamflow Frontend is a React + TypeScript single-page application scaffolded with Vite. The codebase implements authentication flows and organization management views, and provides a protected dashboard area that depends on a backend API. This README documents the project scope, architecture, and reproducible setup steps in an academic, implementation-focused format.
 
-Currently, two official plugins are available:
+## Key Features
+- Authentication flow: register, sign-in, password reset, avatar upload.
+- Protected dashboard shell with a sidebar, search, and organization list.
+- Organization creation view (file upload planned).
+- API integration with token refresh and centralized error handling.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Technology Stack
+- UI: React 19, React Router 7, Tailwind CSS 4, shadcn/ui components.
+- State: Zustand (auth state persistence).
+- Data and HTTP: Axios, TanStack Query (dependency available).
+- Tooling: Vite, TypeScript, ESLint.
 
-## React Compiler
+## Architecture Overview
+- Routing is defined in [src/app/routes.tsx](src/app/routes.tsx#L1-L35) using `createBrowserRouter`.
+- Auth state is stored in a persistent Zustand store in [src/app/providers/user.ts](src/app/providers/user.ts#L1-L33).
+- Protected routes are enforced by a route guard that validates `/auth/me` and refreshes tokens on 401 in [src/app/providers/ProtectedRoute.tsx](src/app/providers/ProtectedRoute.tsx#L1-L51).
+- API utilities wrap Axios with unified error handling in [src/shared/utils/api.ts](src/shared/utils/api.ts#L1-L92).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Project Structure
+- [src/app](src/app): routing, providers, and shared types.
+- [src/features](src/features): feature modules (auth, organizations).
+- [src/shared](src/shared): reusable UI components, layout, hooks, and API utilities.
+- [src/index.css](src/index.css): global styles and Tailwind entry.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting Started
+1) Install dependencies:
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2) Configure environment variables (see next section).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+3) Start the dev server:
+```bash
+npm run dev
 ```
+
+## Environment Variables
+Create a `.env` file at the project root with:
+```
+VITE_SERVER_URL=http://localhost:3000
+```
+This value is consumed by the Axios client in [src/shared/utils/api.ts](src/shared/utils/api.ts#L38-L92) to construct API URLs.
+
+## Available Scripts
+- `npm run dev`: start Vite in development mode.
+- `npm run build`: type-check and build for production.
+- `npm run lint`: run ESLint.
+- `npm run preview`: preview the production build.
+
+## Current Routes (Selected)
+- `/account/register`, `/account/login`, `/account/forgot-password`.
+- `/dashboard`, `/orgs/add`, `/project`, `/task` (protected via auth guard).
+- `/privacy-policy`, `/term-and-conditions`, `/contact-us` (placeholders).
+
+## API Integration Notes
+- Auth endpoints are defined in [src/features/auth/utils/apis.ts](src/features/auth/utils/apis.ts#L1-L116).
+- Organization endpoints are defined in [src/features/orgs/apis.ts](src/features/orgs/apis.ts#L1-L35).
+- The refresh flow uses `/auth/refresh` and retries failed requests on 401.
+
+## Status and Limitations
+- Several routes render placeholders and require UI/feature completion.
+- Organization logo upload is planned but not yet implemented.
+- No automated tests are included at this time.
+
+## License
+License information has not been specified. Add a license file if this repository is intended for distribution.

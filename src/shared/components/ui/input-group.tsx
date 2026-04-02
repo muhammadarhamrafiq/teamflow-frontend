@@ -1,10 +1,17 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
+<<<<<<< HEAD
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { cn } from "@/shared/lib/utils";
+=======
+import { cn } from "@/shared/lib/utils"
+import { Button } from "@/shared/components/ui/button"
+import { Input } from "@/shared/components/ui/input"
+import { Textarea } from "@/shared/components/ui/textarea"
+>>>>>>> 6320c31 (chore: cleaned the architecture)
 
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (

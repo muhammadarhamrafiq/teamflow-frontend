@@ -1,6 +1,10 @@
 import * as React from "react";
 
+<<<<<<< HEAD
 import { cn } from "@/shared/lib/utils";
+=======
+import { cn } from "@/shared/lib/utils"
+>>>>>>> 6320c31 (chore: cleaned the architecture)
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (

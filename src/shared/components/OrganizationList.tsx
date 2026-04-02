@@ -11,7 +11,7 @@ const OrganizationList = ({ search }: { search: string }) => {
   if (error) toast.error(error);
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className="px-0">
       {loading
         ? "Loading"
         : organizations.map((org) => <Organization key={org.id} org={org} />)}
@@ -23,11 +23,14 @@ const Organization = ({ org }: { org: Organization }) => {
   return (
     <Link
       to={`/orgs/${org.slug}`}
-      className="flex items-center gap-2 mt-4 hover:border-r-2 py-0.5 hover:bg-accent"
+      className="flex items-center gap-1 mt-4 hover:border-r-2 py-0.5 hover:bg-accent"
     >
       <Avatar avatar={org.logoUrl} iconVariant="ORG" size="sm" />
       <div>
-        <h2>{org.name}</h2>
+        <h2>
+          {org.name.substring(0, 22)}
+          {org.name.length > 22 && "..."}
+        </h2>
       </div>
     </Link>
   );

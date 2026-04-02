@@ -8,17 +8,24 @@ interface AvatarProps {
   avatar: string | null;
   size?: AvatarSize;
   iconVariant: "USER" | "ORG";
+  className?: string;
 }
 
-const Avatar = ({ avatar, iconVariant, size = "md" }: AvatarProps) => {
+const Avatar = ({
+  avatar,
+  iconVariant,
+  size = "md",
+  className,
+}: AvatarProps) => {
   return (
     <div
       className={clsx(
         "border rounded-full flex items-center justify-center overflow-hidden shrink-0",
         size === "sm" && "w-8 h-8",
         size === "md" && "w-16 h-16",
-        size === "lg" && "w-32 h-32",
+        size === "lg" && "w-24 h-24",
         size === "xl" && "w-64 h-64",
+        className,
       )}
     >
       {avatar ? (

@@ -1,4 +1,3 @@
-import { useThemeStore } from "@/app/providers/themeprovider";
 import { useAuthStore } from "@/app/providers/user";
 import SearchBar from "@/shared/components/SearchBar";
 import {
@@ -7,14 +6,14 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/shared/components/ui/sidebar";
-import { Add, Moon02Icon, Sun } from "@hugeicons/core-free-icons";
+import { Add } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router";
 import Avatar from "../Avatar";
 import LogoWithText from "../LogoWithText";
 import OrganizationList from "../OrganizationList";
-import { Button } from "../ui/button";
+import ThemeSwitch from "../ThemeSwitch";
 import { Sidebar, SidebarContent, SidebarHeader } from "../ui/sidebar";
 
 export default function Layout() {
@@ -45,7 +44,7 @@ const DashBoardSidebar = () => {
           <LogoWithText size="lg" className="py-2" />
         </Link>
       </SidebarHeader>
-      <SidebarContent className="px-2 mt-4">
+      <SidebarContent className="px-0.25 mt-4">
         <div className="flex gap-1">
           <SearchBar
             value={search}
@@ -65,12 +64,7 @@ const DashBoardSidebar = () => {
 };
 
 const DashboardNavbar = () => {
-  const { setTheme, theme } = useThemeStore((state) => state);
   const { user } = useAuthStore.getState();
-
-  useEffect(() => {
-    setTheme("system");
-  }, [setTheme]);
 
   return (
     <nav className="px-4 py-4 md:px-8 flex items-center justify-between md:justify-end">
@@ -88,17 +82,7 @@ const DashboardNavbar = () => {
           size={"icon"}
         />
         <div>
-          <Button
-            className="rounded-md flex items-center justify-center cursor-pointer md:size-8 md:[&_svg:not([class*='size-'])]:size-4"
-            variant={"ghost"}
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            size={"icon"}
-          >
-            <HugeiconsIcon
-              icon={theme === "light" ? Moon02Icon : Sun}
-              size={100}
-            />
-          </Button>
+          <ThemeSwitch />
         </div>
         <div className="ml-1">
           <Link to={"/profile"}>

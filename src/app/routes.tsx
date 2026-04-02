@@ -1,7 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createBrowserRouter } from "react-router";
 import { Account } from "../features";
 =======
+=======
+import LandingPage from "@/features/landing/LandingPage";
+>>>>>>> e0b1f5b (feat: org CRUD setup And Landing Page)
 import DashboardLayout from "@/shared/components/Layout/DashboardLayout";
 import { createBrowserRouter } from "react-router";
 import { Account, Organization } from "../features";
@@ -9,7 +13,7 @@ import ProtectedRoute from "./providers/ProtectedRoute";
 >>>>>>> 6320c31 (chore: cleaned the architecture)
 
 const router = createBrowserRouter([
-  { path: "/", element: "Landing Page Not Developed" },
+  { path: "/", element: <LandingPage /> },
   {
     path: "/account",
     element: <Account.Layout />,
@@ -35,7 +39,10 @@ const router = createBrowserRouter([
         path: "orgs",
         children: [
           { path: "add", element: <Organization.AddOrganization /> },
-          { path: ":slug", element: <h1>Dynamic Organization Page</h1> },
+          {
+            path: ":organizationSlug",
+            element: <Organization.OrganizationPage />,
+          },
         ],
       },
       { path: "project", element: <span>Project Page</span> },

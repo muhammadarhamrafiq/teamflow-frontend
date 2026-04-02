@@ -1,3 +1,4 @@
+import type { InputFieldProps } from "@/app";
 import {
   InputGroup,
   InputGroupAddon,
@@ -6,8 +7,6 @@ import {
 import { EyeIcon, EyeOff } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
-
-import type { InputFieldProps } from "../../utils";
 
 const PasswordField = ({
   value,

@@ -114,20 +114,20 @@ const NameInput = ({
       </label>
 
       <Input
-        type="email"
-        id="email"
+        type="text"
+        id="name"
         className={"w-100 h-10 hover:shadow " + className}
         placeholder="Enter Organization Name"
         value={value}
         disabled={disabled}
         onChange={onChange}
         aria-invalid={error ? true : false}
-        aria-describedby={error ? "emailDescription" : undefined}
+        aria-describedby={error ? "nameDescription" : undefined}
       />
 
       {error && (
         <p
-          id="emailDescription"
+          id="nameDescription"
           className="w-100 text-xs text-destructive mt-1"
         >
           {error}
@@ -158,12 +158,12 @@ const DescriptionInput = ({
         onChange={onChange}
         disabled={disabled}
         aria-invalid={error ? true : false}
-        aria-describedby={error ? "emailDescription" : undefined}
+        aria-describedby={error ? "descDescription" : undefined}
       />
 
       {error && (
         <p
-          id="emailDescription"
+          id="descDescription"
           className="w-100 text-xs text-destructive mt-1"
         >
           {error}

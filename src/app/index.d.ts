@@ -13,4 +13,12 @@ interface Organization {
   name: string;
   slug: string;
   logoUrl: string | null;
+  description: string | null;
 }
+
+type USER_ROLE = "MEMBER" | "ADMIN" | "OWNER";
+
+type OrgWithRoleAndDesc = Organization & {
+  myRole: USER_ROLE;
+  description: string | null;
+};

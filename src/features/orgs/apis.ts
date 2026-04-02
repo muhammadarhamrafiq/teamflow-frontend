@@ -1,4 +1,4 @@
-import type { Organization } from "@/app";
+import type { Organization, USER_ROLE } from "@/app";
 import api, { apiHandler } from "@/shared/utils/api";
 
 export const fetchAllOrganizations = apiHandler(async (search?: string) => {
@@ -12,12 +12,14 @@ export const fetchAllOrganizations = apiHandler(async (search?: string) => {
 
 interface CreateOrganizationResponse {
   message: string;
-  organization: {
-    id: string;
-    slug: string;
-    logoUrl: string;
-    description: string;
-    name: string;
+  organization: Organization;
+}
+
+interface updateOrganizationResponse {
+  message: string;
+  organization: Organization & {
+    description?: string;
+    updatedAt: string;
   };
 }
 
@@ -41,7 +43,7 @@ export const updateLogo = apiHandler(async (id: string, logo: File) => {
   const formdata = new FormData();
   formdata.append("logo", logo);
 
-  const res = await api.patch<CreateOrganizationResponse>(
+  const res = await api.patch<updateOrganizationResponse>(
     `/orgs/${id}/logo`,
     formdata,
     {
@@ -52,7 +54,41 @@ export const updateLogo = apiHandler(async (id: string, logo: File) => {
     },
   );
 
-  console.log(res);
+  return res.data;
+});
 
+interface getOrgResponse {
+  message: string;
+  organization: Organization & {
+    myRole: USER_ROLE;
+    description: string | null;
+  };
+}
+
+export const getOrgBySlug = apiHandler(async (slug: string) => {
+  const res = await api.get<getOrgResponse>(`/orgs/${slug}`);
+  return res.data;
+});
+
+export const updateOrganization = apiHandler(
+  async (
+    id: string,
+    { name, description }: { name?: string; description?: string },
+  ) => {
+    const body: { name?: string; description?: string } = {};
+
+    if (name) body.name = name;
+    if (description) body.description = description;
+
+    const res = await api.patch<updateOrganizationResponse>(
+      `/orgs/${id}`,
+      body,
+    );
+    return res.data;
+  },
+);
+
+export const deleteOrganization = apiHandler(async (id: string) => {
+  const res = await api.delete(`/orgs/${id}`);
   return res.data;
 });

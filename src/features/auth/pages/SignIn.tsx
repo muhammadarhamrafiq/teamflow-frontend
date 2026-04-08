@@ -66,18 +66,14 @@ const SignIn = () => {
 
       <EmailInput
         value={email}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setEmail(e.target.value)
-        }
+        onChange={(e) => setEmail(e.target.value)}
         disabled={loading}
         error={inputErrors.email}
       />
 
       <PasswordField
         value={password}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setPassword(e.target.value)
-        }
+        onChange={(e) => setPassword(e.target.value)}
         disabled={loading}
         error={inputErrors.password}
       />

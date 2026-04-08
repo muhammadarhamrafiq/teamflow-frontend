@@ -1,7 +1,6 @@
-import LandingPage from "@/features/landing/LandingPage";
 import DashboardLayout from "@/shared/components/Layout/DashboardLayout";
 import { createBrowserRouter } from "react-router";
-import { Account, Organization } from "../features";
+import { Account, LandingPage, Organization } from "../features";
 import ProtectedRoute from "./providers/ProtectedRoute";
 
 const router = createBrowserRouter([

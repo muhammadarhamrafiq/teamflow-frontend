@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";
 
-import type { InputFieldProps } from "../utils";
+import type { InputFieldProps } from "@/app";
 import { registerUser } from "../utils/apis";
 import PasswordField from "./ui/Password";
 

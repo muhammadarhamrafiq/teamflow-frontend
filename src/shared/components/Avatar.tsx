@@ -22,7 +22,7 @@ const Avatar = ({
       className={clsx(
         "border rounded-full flex items-center justify-center overflow-hidden shrink-0",
         size === "sm" && "w-8 h-8",
-        size === "md" && "w-16 h-16",
+        size === "md" && "w-10 h-10",
         size === "lg" && "w-24 h-24",
         size === "xl" && "w-64 h-64",
         className,

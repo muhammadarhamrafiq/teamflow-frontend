@@ -44,7 +44,7 @@ const DashBoardSidebar = () => {
           <LogoWithText size="lg" className="py-2" />
         </Link>
       </SidebarHeader>
-      <SidebarContent className="px-0.25 mt-4">
+      <SidebarContent className="px-px mt-4">
         <div className="flex gap-1">
           <SearchBar
             value={search}
@@ -89,7 +89,7 @@ const DashboardNavbar = () => {
             <Avatar
               avatar={user?.avatarUrl || null}
               iconVariant="USER"
-              size="sm"
+              size="md"
             />
           </Link>
         </div>

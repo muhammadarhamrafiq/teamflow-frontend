@@ -59,7 +59,7 @@ const AvatarUploader = ({ value, handleUpload }: AvatarUploaderProps) => {
       window.removeEventListener("dragleave", handleDragLeave);
       window.removeEventListener("drop", handleDrop);
     };
-  }, []);
+  }, [handleUpload]);
 
   return (
     <>

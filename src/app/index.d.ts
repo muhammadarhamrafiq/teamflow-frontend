@@ -8,7 +8,7 @@ export interface InputFieldProps {
   className?: string;
 }
 
-interface Organization {
+export interface Organization {
   id: string;
   name: string;
   slug: string;
@@ -17,8 +17,34 @@ interface Organization {
 }
 
 type USER_ROLE = "MEMBER" | "ADMIN" | "OWNER";
+export type OrgWithRole = Organization & { myRole: USER_ROLE };
 
-type OrgWithRoleAndDesc = Organization & {
+export type OrgWithRoleAndDesc = Organization & {
   myRole: USER_ROLE;
   description: string | null;
 };
+
+export type OrgWithKPIs = OrgWithRoleAndDesc & {
+  projectsSummary: {
+    totalProjects: number;
+    overDueProjects: number;
+    inProgressProjects: number;
+    completedProjects: number;
+  };
+};
+
+export interface Membership {
+  userId: string;
+  name: string;
+  email: string;
+  avatarUrl?: string;
+  role: USER_ROLE;
+  joinedSince: Date;
+}
+
+export interface Pagination {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+}

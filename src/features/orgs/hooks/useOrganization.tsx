@@ -4,6 +4,7 @@ import {
   deleteOrganization,
   fetchAllOrganizations,
   getOrgBySlug,
+  leaveOrganization,
   updateLogo,
   updateOrganization,
 } from "../apis";
@@ -97,6 +98,20 @@ export function useDeleteOrganization() {
   return useMutation({
     mutationFn: async (id: string) => {
       const res = await deleteOrganization(id);
+      return res;
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+  });
+}
+
+export function useLeaveOrganization() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const res = await leaveOrganization(id);
       return res;
     },
 

@@ -11,7 +11,7 @@ const App = () => {
 
   useEffect(() => {
     setTheme("system");
-  }, []);
+  }, [setTheme]);
 
   return (
     <>

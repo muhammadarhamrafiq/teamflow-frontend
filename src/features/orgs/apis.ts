@@ -1,10 +1,16 @@
-import type { Organization, USER_ROLE } from "@/app";
+import type {
+  Membership,
+  Organization,
+  OrgWithKPIs,
+  OrgWithRole,
+  Pagination,
+} from "@/app";
 import api, { apiHandler } from "@/shared/utils/api";
 
 export const fetchAllOrganizations = apiHandler(async (search?: string) => {
   const res = await api.get<{
     message: string;
-    organizations: Organization[];
+    organizations: OrgWithRole[];
   }>("/orgs", { params: { search } });
 
   return res.data;
@@ -59,10 +65,7 @@ export const updateLogo = apiHandler(async (id: string, logo: File) => {
 
 interface getOrgResponse {
   message: string;
-  organization: Organization & {
-    myRole: USER_ROLE;
-    description: string | null;
-  };
+  organization: OrgWithKPIs;
 }
 
 export const getOrgBySlug = apiHandler(async (slug: string) => {
@@ -90,5 +93,32 @@ export const updateOrganization = apiHandler(
 
 export const deleteOrganization = apiHandler(async (id: string) => {
   const res = await api.delete(`/orgs/${id}`);
+  return res.data;
+});
+
+interface GetMembersResponse {
+  message: string;
+  members: Membership[];
+  pagination: Pagination;
+}
+
+export const getMembers = apiHandler(
+  async (
+    id: string,
+    { limit, search, page }: { limit?: number; search?: string; page?: number },
+  ) => {
+    const res = await api.get<GetMembersResponse>(`/orgs/${id}/mems`, {
+      params: {
+        limit,
+        search,
+        page,
+      },
+    });
+    return res.data;
+  },
+);
+
+export const leaveOrganization = apiHandler(async (id) => {
+  const res = await api.delete<{ message: string }>(`/orgs/${id}/mems/me`);
   return res.data;
 });

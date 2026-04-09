@@ -1,9 +1,9 @@
-import type { OrgWithKPIs } from "@/app";
 import Avatar from "@/shared/components/Avatar";
 import InlineEditField from "@/shared/components/InlineEditField";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { useOrganizationContext } from "../context/organizationContext";
 import { useUpdateOrganization } from "../hooks/useOrganization";
 import OrganizationKPIs from "./OrganizationKPIs";
 
@@ -12,7 +12,9 @@ type InputErrors = {
   description?: string;
 };
 
-const OrganizationHero = ({ organization }: { organization: OrgWithKPIs }) => {
+const OrganizationHero = () => {
+  const organization = useOrganizationContext();
+
   const [loading, setLoading] = useState(false);
   const [inputErrors, setInputErrors] = useState<InputErrors>({});
   const navigate = useNavigate();

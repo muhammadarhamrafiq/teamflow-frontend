@@ -7,7 +7,7 @@ import {
   leaveOrganization,
   updateLogo,
   updateOrganization,
-} from "../apis";
+} from "../utils/apis";
 
 export function useOrganizations(search?: string) {
   const query = useQuery({

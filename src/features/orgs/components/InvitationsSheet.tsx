@@ -13,8 +13,9 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import CreateInvitationModal from "./CreateInvitationModal";
 
-const InvitationsSheet = ({ id }: { id: string }) => {
+const InvitationsSheet = () => {
   const [search, setSearch] = useState("");
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -34,7 +35,7 @@ const InvitationsSheet = ({ id }: { id: string }) => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <CreateInvitationModal id={id} />
+          <CreateInvitationModal />
         </div>
       </SheetContent>
     </Sheet>

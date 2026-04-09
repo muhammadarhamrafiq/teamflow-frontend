@@ -4,6 +4,7 @@ import type {
   OrgWithKPIs,
   OrgWithRole,
   Pagination,
+  USER_ROLE,
 } from "@/app";
 import api, { apiHandler } from "@/shared/utils/api";
 
@@ -118,7 +119,42 @@ export const getMembers = apiHandler(
   },
 );
 
-export const leaveOrganization = apiHandler(async (id) => {
-  const res = await api.delete<{ message: string }>(`/orgs/${id}/mems/me`);
+interface UpdateMemberResponse {
+  message: string;
+  membership: {
+    userId: string;
+    organizationId: string;
+    role: USER_ROLE;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+}
+
+export const updateMember = apiHandler(
+  async (orgId: string, userId: string, role: USER_ROLE) => {
+    const res = await api.patch<UpdateMemberResponse>(
+      `/orgs/${orgId}/mems/${userId}`,
+      {},
+      {
+        params: {
+          role,
+        },
+      },
+    );
+    return res.data;
+  },
+);
+
+export const removeMember = apiHandler(
+  async (orgId: string, userId: string) => {
+    const res = await api.delete<UpdateMemberResponse>(
+      `/orgs/${orgId}/mems/${userId}`,
+    );
+    return res.data;
+  },
+);
+
+export const leaveOrganization = apiHandler(async (id: string) => {
+  const res = await api.delete<UpdateMemberResponse>(`/orgs/${id}/mems/me`);
   return res.data;
 });

@@ -12,7 +12,7 @@ import { UserAdd01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 
-const CreateInvitationModal = ({ id }: { id: string }) => {
+const CreateInvitationModal = () => {
   const [search, setSearch] = useState("");
 
   return (

@@ -11,6 +11,7 @@ import {
 import { UserAdd01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
+import CandidateList from "./CandidateList";
 
 const CreateInvitationModal = () => {
   const [search, setSearch] = useState("");
@@ -30,6 +31,7 @@ const CreateInvitationModal = () => {
           </DialogDescription>
         </DialogHeader>
         <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
+        <CandidateList search={search} />
       </DialogContent>
     </Dialog>
   );

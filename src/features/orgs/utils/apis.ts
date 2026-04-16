@@ -3,6 +3,7 @@ import type {
   Organization,
   OrgWithKPIs,
   OrgWithRole,
+  PaginatedWithSearch,
   Pagination,
   USER_ROLE,
 } from "@/app";
@@ -104,10 +105,7 @@ interface GetMembersResponse {
 }
 
 export const getMembers = apiHandler(
-  async (
-    id: string,
-    { limit, search, page }: { limit?: number; search?: string; page?: number },
-  ) => {
+  async (id: string, { limit, search, page }: PaginatedWithSearch) => {
     const res = await api.get<GetMembersResponse>(`/orgs/${id}/mems`, {
       params: {
         limit,

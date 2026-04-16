@@ -48,3 +48,34 @@ export interface Pagination {
   totalItems: number;
   totalPages: number;
 }
+
+export interface Paginated {
+  limit?: number;
+  page?: number;
+}
+
+export interface PaginatedWithSearch {
+  limit?: number;
+  search?: string;
+  page?: number;
+}
+
+export interface Invitation {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl: string;
+  invitedSince: Date;
+  role: USER_ROLE;
+}
+
+type Candidate = {
+  id: string;
+  email: string;
+  name: string;
+  avatarUrl?: string;
+  invitationStatus: {
+    isMember: boolean;
+    invited: boolean;
+  };
+};

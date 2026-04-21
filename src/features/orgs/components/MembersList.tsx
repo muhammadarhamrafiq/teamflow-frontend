@@ -76,21 +76,6 @@ const RoleBadge = ({ role, userId }: { role: USER_ROLE; userId: string }) => {
 
   const isOwner = myRole === "OWNER";
 
-  if (!isOwner) {
-    return (
-      <span
-        className={clsx(
-          "border px-2 py-px text-xs rounded-full",
-          role === "OWNER" && "border-primary/60 text-primary",
-          role === "ADMIN" && "border-foreground/60 text-foreground",
-          role === "MEMBER" && "border-accent/60 text-accent-foreground",
-        )}
-      >
-        {role}
-      </span>
-    );
-  }
-
   async function updateMember(value: USER_ROLE) {
     if (loading) return;
 
@@ -124,6 +109,21 @@ const RoleBadge = ({ role, userId }: { role: USER_ROLE; userId: string }) => {
 
     toast.success("User Removed Successfully");
     setLoading(false);
+  }
+
+  if (!isOwner) {
+    return (
+      <span
+        className={clsx(
+          "border px-2 py-px text-xs rounded-full",
+          role === "OWNER" && "border-primary/60 text-primary",
+          role === "ADMIN" && "border-foreground/60 text-foreground",
+          role === "MEMBER" && "border-accent/60 text-accent-foreground",
+        )}
+      >
+        {role}
+      </span>
+    );
   }
 
   return (

@@ -35,7 +35,7 @@ export const useAcceptInvite = () => {
   });
 };
 
-export const useCancelInvite = () => {
+export const useRejectInvite = () => {
   const client = useQueryClient();
 
   return useMutation({

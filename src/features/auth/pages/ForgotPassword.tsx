@@ -3,7 +3,7 @@ import { Button } from "@/shared/components/ui/button";
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
-import EmailInput from "../components/ui/Email";
+import EmailInput from "../../../shared/components/Email";
 import HeaderWithLogo from "../components/ui/HeaderWithLogo";
 import PasswordField from "../components/ui/Password";
 import { forgotPassword, resetPassword } from "../utils/apis";
@@ -100,12 +100,12 @@ const ResetStep = ({ token }: { token: string }) => {
 
   const onSubmit = async () => {
     setLoading(false);
-    setError(
-      password.length < 6
-        ? "Password must contain atleast 6 characters"
-        : undefined,
-    );
-    if (error) return;
+    if (password.length < 6) {
+      setError("Password must contain atleast 6 characters");
+      return;
+    }
+
+    setError(undefined);
 
     const res = await resetPassword(token, password);
     if (res.error) {

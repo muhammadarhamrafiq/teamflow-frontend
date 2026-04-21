@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
-import EmailInput from "../components/ui/Email";
+import EmailInput from "../../../shared/components/Email";
 import PasswordField from "../components/ui/Password";
 import { requestSignIn } from "../utils/apis";
 
@@ -86,7 +86,7 @@ const SignIn = () => {
         {loading ? "Sending..." : "Login"}
       </Button>
       <Link
-        to="/account/forgot-password"
+        to="/account/reset-password"
         className="text-sm mt-2 hover:underline hover:text-primary"
       >
         Forgot Password

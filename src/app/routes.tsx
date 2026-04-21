@@ -1,6 +1,6 @@
 import DashboardLayout from "@/shared/components/Layout/DashboardLayout";
 import { createBrowserRouter } from "react-router";
-import { Account, LandingPage, Organization } from "../features";
+import { Account, LandingPage, Organization, Profile } from "../features";
 import ProtectedRoute from "./providers/ProtectedRoute";
 
 const router = createBrowserRouter([
@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     children: [
       { path: "register", element: <Account.SignUp /> },
       { path: "login", element: <Account.SignIn /> },
-      { path: "forgot-password", element: <Account.ForgotPassword /> },
+      { path: "reset-password", element: <Account.ForgotPassword /> },
       { path: "verify-email", element: "Verify Email Page" },
     ],
   },
@@ -35,7 +35,16 @@ const router = createBrowserRouter([
       },
       { path: "project", element: <span>Project Page</span> },
       { path: "task", element: <span>Task Page</span> },
-      { path: "profile", element: <span>Profile Page</span> },
+      {
+        path: "profile",
+        children: [
+          { index: true, element: <Profile.Profile /> },
+          { path: "update-avatar", element: <Profile.UpdateAvatar /> },
+          { path: "update-name", element: <Profile.UpdateName /> },
+          { path: "update-email", element: <Profile.UpdateEmail /> },
+          { path: "reset-password", element: <Profile.ResetPassword /> },
+        ],
+      },
     ],
   },
   { path: "/term-and-conditions", element: "Terms And Condition Page" },

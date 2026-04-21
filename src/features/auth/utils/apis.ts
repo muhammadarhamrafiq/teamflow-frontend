@@ -36,34 +36,6 @@ export const registerUser = apiHandler(
 );
 
 /**
- * Upload Avatar Api
- */
-interface UploadAvatarResponse {
-  message: string;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    avatarUrl: string;
-    updatedAt: Date;
-  };
-}
-
-export const uploadAvatar = apiHandler(async (avatar: File) => {
-  const formdata = new FormData();
-  formdata.append("avatar", avatar);
-
-  const res = await api.patch<UploadAvatarResponse>("/users/avatar", formdata, {
-    skipAuth: true,
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-
-  return res.data;
-});
-
-/**
  * Login Api
  */
 type LoginResponse = RegisterResponse;

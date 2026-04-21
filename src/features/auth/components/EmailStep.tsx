@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";
 
+import EmailInput from "@/shared/components/Email";
 import { submitEmail } from "../utils/apis";
-import EmailInput from "./ui/Email";
 import HeaderWithLogo from "./ui/HeaderWithLogo";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

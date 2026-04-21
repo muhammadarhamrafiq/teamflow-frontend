@@ -4,14 +4,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
-import { uploadAvatar } from "@/features/profile/utils/apis";
 import AvatarUploader from "@/shared/components/AvatarUploader";
+import { uploadAvatar } from "../utils/apis";
 
-const AvatarStep = () => {
-  const { setUser } = useAuthStore.getState();
+const UpdateAvatar = () => {
+  const { setUser, user } = useAuthStore.getState();
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(user?.avatarUrl || "");
 
   const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ const AvatarStep = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-col items-center py-20">
       <Header />
 
       <AvatarUploader value={preview ?? ""} handleUpload={handleUpload} />
@@ -53,15 +53,15 @@ const AvatarStep = () => {
         onClick={onSubmit}
         disabled={loading || !file}
       >
-        {loading ? "Uploading..." : "Continue"}
+        {loading ? "Uploading..." : "Update"}
       </Button>
       <Link
-        to="/dashboard"
+        to="/profile"
         className="mt-2 text-sm hover:text-primary hover:underline"
       >
-        Skip for Now
+        Cancel
       </Link>
-    </>
+    </div>
   );
 };
 
@@ -69,13 +69,10 @@ const Header = () => {
   return (
     <>
       <h2 className="text-xl font-bold text-foreground w-80 text-center">
-        Upload Avatar
+        Update Your Avatar
       </h2>
-      <p className="w-80 text-xs text-secondary-foreground text-center">
-        Upload profile picture you can always change it later
-      </p>
     </>
   );
 };
 
-export default AvatarStep;
+export default UpdateAvatar;

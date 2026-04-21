@@ -1,11 +1,10 @@
 import { useAuthStore } from "@/app/providers/user";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";
 
-import type { InputFieldProps } from "@/app";
+import NameField from "@/shared/components/NameInput";
 import { registerUser } from "../utils/apis";
 import PasswordField from "./ui/Password";
 
@@ -107,32 +106,6 @@ const Header = () => {
       <p className="w-80 text-sm text-secondary-foreground">
         Fill in the following information to complete you registeration process.
       </p>
-    </>
-  );
-};
-
-const NameField = ({ value, onChange, error, disabled }: InputFieldProps) => {
-  return (
-    <>
-      <label htmlFor="name" className="sr-only">
-        Name
-      </label>
-      <Input
-        type="text"
-        id="name"
-        className="w-80 mt-12 h-10 hover:shadow"
-        placeholder="Enter your Name"
-        value={value}
-        onChange={onChange}
-        aria-invalid={error ? true : false}
-        aria-describedby={error ? "nameDescription" : undefined}
-        disabled={disabled}
-      />
-      {error && (
-        <p id="nameDescription" className="w-80 text-xs text-destructive mt-1">
-          {error}
-        </p>
-      )}
     </>
   );
 };

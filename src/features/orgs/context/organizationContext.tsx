@@ -15,4 +15,5 @@ export const OrganizationContext = createContext<OrgWithKPIs>({
     totalProjects: 0,
   },
 });
+
 export const useOrganizationContext = () => useContext(OrganizationContext);

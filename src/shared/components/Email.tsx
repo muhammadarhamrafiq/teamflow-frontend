@@ -28,7 +28,7 @@ const EmailInput = ({
 
       {error && (
         <p id="emailDescription" className="w-80 text-xs text-destructive mt-1">
-          Valid email is required
+          {typeof error === "string" ? error : "Valid email is required"}
         </p>
       )}
     </>

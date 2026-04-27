@@ -158,7 +158,7 @@ const MemberShipInvitationsList = () => {
   return (
     <span>
       {data.invitations.map((inv) => (
-        <MembershipInvite invitation={inv} />
+        <MembershipInvite key={inv.id} invitation={inv} />
       ))}
     </span>
   );

@@ -68,7 +68,7 @@ const AvatarUploader = ({ value, handleUpload }: AvatarUploaderProps) => {
       {/* Preview */}
       <label
         htmlFor="avatar"
-        className="w-80 h-80 border overflow-hidden rounded-full mt-2 cursor-pointer text-ring hover:border-primary hover:text-primary transition-colors flex items-center justify-center"
+        className="w-64 h-64 border overflow-hidden rounded-full mt-2 cursor-pointer text-ring hover:border-primary hover:text-primary transition-colors flex items-center justify-center"
       >
         {value !== "" ? (
           <img

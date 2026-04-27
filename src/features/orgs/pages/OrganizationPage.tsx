@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import MembersComponent from "../components/MembersComponent";
 import OrganizationHero from "../components/OrganizationHero";
+import ProjectsComponent from "../components/ProjectsComponent";
 import { useOrganization } from "../hooks/useOrganization";
 import { OrganizationProvider } from "../providers/organizationProvider";
 
@@ -21,9 +22,7 @@ const OrganizationPage = () => {
         </div>
         <MembersComponent />
       </div>
-      <div className="mx-4 md:mx-8 mb-16 h-100 border flex items-center justify-center">
-        Projects
-      </div>
+      <ProjectsComponent />
     </OrganizationProvider>
   );
 };

@@ -1,8 +1,7 @@
-import type { InputFieldProps } from "@/app";
 import AvatarUploader from "@/shared/components/AvatarUploader";
+import DescriptionInput from "@/shared/components/DescriptionInput";
+import InputField from "@/shared/components/InputField";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Textarea } from "@/shared/components/ui/textarea";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -59,14 +58,18 @@ const AddOrganization = () => {
     <div className="w-full flex flex-col items-center justify-center">
       <h1 className="text-xl font-semibold py-4">Create the Organization</h1>
       <AvatarUploader value={preview ?? ""} handleUpload={handleUpload} />
-      <NameInput
-        className="mt-2"
+      <InputField
+        label="Enter Organization Name"
+        placeholder="Enter Organization Description"
+        className="mt-2 w-80"
         value={name}
         onChange={(e) => setName(e.target.value)}
         error={inputErrors.name}
         disabled={loading}
       />
       <DescriptionInput
+        placeholder="Enter Organization Description"
+        label="Organization Description"
         className="mt-2"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -74,7 +77,7 @@ const AddOrganization = () => {
         disabled={loading}
       />
       <Button
-        className="w-100 mt-2 h-10 text-md cursor-pointer hover:scale-98 focus:scale-98 focus:bg-primary/80"
+        className="w-80 mt-2 h-10 text-md cursor-pointer hover:scale-98 focus:scale-98 focus:bg-primary/80"
         disabled={loading}
         onClick={handleSubmit}
       >
@@ -100,76 +103,4 @@ function validate(name: string, description: string) {
   return errors;
 }
 
-const NameInput = ({
-  value,
-  onChange,
-  error,
-  disabled,
-  className,
-}: InputFieldProps) => {
-  return (
-    <>
-      <label htmlFor="email" className="sr-only">
-        Email
-      </label>
-
-      <Input
-        type="text"
-        id="name"
-        className={"w-100 h-10 hover:shadow " + className}
-        placeholder="Enter Organization Name"
-        value={value}
-        disabled={disabled}
-        onChange={onChange}
-        aria-invalid={error ? true : false}
-        aria-describedby={error ? "nameDescription" : undefined}
-      />
-
-      {error && (
-        <p
-          id="nameDescription"
-          className="w-100 text-xs text-destructive mt-1"
-        >
-          {error}
-        </p>
-      )}
-    </>
-  );
-};
-
-const DescriptionInput = ({
-  value,
-  onChange,
-  error,
-  disabled,
-  className,
-}: InputFieldProps) => {
-  return (
-    <>
-      <label htmlFor="email" className="sr-only">
-        Email
-      </label>
-
-      <Textarea
-        id="email"
-        className={"w-100 h-40 hover:shadow " + className}
-        placeholder="Enter Organization Description"
-        value={value}
-        onChange={onChange}
-        disabled={disabled}
-        aria-invalid={error ? true : false}
-        aria-describedby={error ? "descDescription" : undefined}
-      />
-
-      {error && (
-        <p
-          id="descDescription"
-          className="w-100 text-xs text-destructive mt-1"
-        >
-          {error}
-        </p>
-      )}
-    </>
-  );
-};
 export default AddOrganization;

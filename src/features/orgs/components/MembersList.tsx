@@ -54,7 +54,7 @@ const MemberList = ({ search }: { search?: string }) => {
 
 const Member = ({ member }: { member: Membership }) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 mt-2">
       <Avatar avatar={member.avatarUrl || ""} size="md" iconVariant="USER" />
       <div className="w-full">
         <div className="flex w-full justify-between text-sm font-semibold">
@@ -70,6 +70,8 @@ const Member = ({ member }: { member: Membership }) => {
 const RoleBadge = ({ role, userId }: { role: USER_ROLE; userId: string }) => {
   const [loading, setLoading] = useState(false);
   const { myRole, id } = useOrganizationContext();
+
+  console.log({ myRole, id });
 
   const updateMutation = useUpdateMemberShip();
   const deleteMutation = useRemoveMembership();

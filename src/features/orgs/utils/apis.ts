@@ -72,6 +72,7 @@ interface getOrgResponse {
 
 export const getOrgBySlug = apiHandler(async (slug: string) => {
   const res = await api.get<getOrgResponse>(`/orgs/${slug}`);
+  console.log(res.data);
   return res.data;
 });
 

@@ -17,6 +17,13 @@ export interface Organization {
 }
 
 type USER_ROLE = "MEMBER" | "ADMIN" | "OWNER";
+type PROJECT_STATUS =
+  | "PLANNING"
+  | "ACTIVE"
+  | "ON_HOLD"
+  | "COMPLETED"
+  | "ARCHIVED";
+
 export type OrgWithRole = Organization & { myRole: USER_ROLE };
 
 export type OrgWithRoleAndDesc = Organization & {
@@ -79,3 +86,9 @@ type Candidate = {
     invited: boolean;
   };
 };
+
+interface ProjectInput {
+  name: string;
+  description: string;
+  dueDate?: Date;
+}

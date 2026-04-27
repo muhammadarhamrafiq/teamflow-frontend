@@ -31,6 +31,7 @@ export const useAcceptInvite = () => {
 
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ["userInvitations"] });
+      client.invalidateQueries({ queryKey: ["organizations"] });
     },
   });
 };

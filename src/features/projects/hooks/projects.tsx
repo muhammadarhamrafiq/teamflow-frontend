@@ -83,27 +83,6 @@ export const useDeleteProject = () => {
   });
 };
 
-export const useGetProject = (orgId: string, slug: string) => {
-  const query = useQuery({
-    queryKey: ["Project", orgId, slug],
-    queryFn: async () => {
-      const res = await getProject(orgId, slug);
-
-      if (res.error || !res.data)
-        throw new Error(res.error || "Something went wrong");
-
-      return res.data.project;
-    },
-  });
-
-  return {
-    project: query.data,
-    error: query.error,
-    loading: query.isLoading,
-    refetch: query.refetch,
-  };
-};
-
 export const useUpdateProject = () => {
   const queryClient = useQueryClient();
 
@@ -122,7 +101,7 @@ export const useUpdateProject = () => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["Project"] });
+      queryClient.invalidateQueries({ queryKey: ["Projects"] });
     },
   });
 };
@@ -144,7 +123,28 @@ export const useUpdateProjectStatus = () => {
       return res;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["Project"] });
+      queryClient.invalidateQueries({ queryKey: ["Projects"] });
     },
   });
+};
+
+export const useGetProject = (orgId: string, slug: string) => {
+  const query = useQuery({
+    queryKey: ["Project", orgId, slug],
+    queryFn: async () => {
+      const res = await getProject(orgId, slug);
+
+      if (res.error || !res.data)
+        throw new Error(res.error || "Something went wrong");
+
+      return res.data.project;
+    },
+  });
+
+  return {
+    project: query.data,
+    error: query.error,
+    loading: query.isLoading,
+    refetch: query.refetch,
+  };
 };

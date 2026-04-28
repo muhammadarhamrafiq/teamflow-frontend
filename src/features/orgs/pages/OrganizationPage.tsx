@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
+import ProjectsComponent from "../../projects/components/ProjectsComponent";
 import MembersComponent from "../components/MembersComponent";
 import OrganizationHero from "../components/OrganizationHero";
-import ProjectsComponent from "../components/ProjectsComponent";
 import { useOrganization } from "../hooks/useOrganization";
 import { OrganizationProvider } from "../providers/organizationProvider";
 

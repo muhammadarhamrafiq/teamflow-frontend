@@ -89,6 +89,6 @@ type Candidate = {
 
 interface ProjectInput {
   name: string;
-  description: string;
+  description?: string;
   dueDate?: Date;
 }

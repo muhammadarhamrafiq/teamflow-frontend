@@ -8,13 +8,26 @@ export const createProject = apiHandler(
   },
 );
 
+interface GetProjectsResponse {
+  message: string;
+  projects: Array<{
+    id: string;
+    status: PROJECT_STATUS;
+    name: string;
+    description?: string;
+    slug: string;
+    startOn: Date;
+    dueDate?: Date;
+  }>;
+}
+
 export const getProjects = apiHandler(
   async (
     orgId: string,
     pagination: PaginatedWithSearch,
     projectStatus?: PROJECT_STATUS | "",
   ) => {
-    const res = await api.get(`/orgs/${orgId}/projects`, {
+    const res = await api.get<GetProjectsResponse>(`/orgs/${orgId}/projects`, {
       params: { ...pagination, projectStatus },
     });
 

@@ -1,4 +1,5 @@
-import { useCreateProject } from "@/features/projects/hooks/projects";
+import { useOrganizationContext } from "@/features/orgs/context/organizationContext";
+import { useUpdateProject } from "@/features/projects/hooks/projects";
 import DatePicker from "@/shared/components/DatePicker";
 import DescriptionInput from "@/shared/components/DescriptionInput";
 import InputField from "@/shared/components/InputField";
@@ -12,11 +13,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
-import { Add01Icon } from "@hugeicons/core-free-icons";
+import { Edit01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useOrganizationContext } from "../context/organizationContext";
 
 interface InputErrors {
   name?: string;
@@ -24,16 +24,25 @@ interface InputErrors {
   dueDate?: string;
 }
 
-const ProjectCreateModal = () => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState<Date | null>(null);
+interface ProjectEditModalInput {
+  project: {
+    id: string;
+    name: string;
+    descritpion?: string;
+    dueDate?: Date;
+  };
+}
+
+const ProjectEditModal = ({ project }: ProjectEditModalInput) => {
+  const [name, setName] = useState(project.name);
+  const [description, setDescription] = useState(project.descritpion || "");
+  const [dueDate, setDueDate] = useState<Date | null>(project.dueDate || null);
   const [loading, setLoading] = useState(false);
   const [inputErrors, setInputErrors] = useState<InputErrors>({});
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const createMutation = useCreateProject();
+  const updateMutation = useUpdateProject();
   const { id: orgId } = useOrganizationContext();
 
   function handleModal(open: boolean) {
@@ -43,9 +52,9 @@ const ProjectCreateModal = () => {
     }
 
     setIsOpen(false);
-    setName("");
-    setDescription("");
-    setDueDate(null);
+    setName(project.name);
+    setDescription(project.descritpion || "");
+    setDueDate(project.dueDate || null);
     setInputErrors({});
   }
 
@@ -77,30 +86,39 @@ const ProjectCreateModal = () => {
 
     setLoading(true);
 
-    const res = await createMutation.mutateAsync({
+    const res = await updateMutation.mutateAsync({
       orgId: orgId,
-      project: {
+      projId: project.id,
+      data: {
         name,
-        description,
+        description: description.length > 0 ? description : undefined,
         dueDate: dueDate ? dueDate : undefined,
       },
     });
 
     if (res.error || !res.data) {
-      toast.error("Project created successfully");
+      toast.error(res.error || "Something Went wrong");
+      setLoading(false);
       return;
     }
 
     setLoading(false);
-    handleModal(false);
-    toast.success("Project created successfully");
+    setName(name);
+    setDescription(description);
+    setDueDate(dueDate);
+    setIsOpen(false);
+    toast.success("Project updated successfully");
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModal}>
       <DialogTrigger asChild>
-        <Button className="cursor-pointer">
-          <HugeiconsIcon icon={Add01Icon} />
+        <Button
+          variant={"secondary"}
+          size={"icon-sm"}
+          className="cursor-pointer"
+        >
+          <HugeiconsIcon icon={Edit01Icon} />
         </Button>
       </DialogTrigger>
       <DialogContent className="w-sm">
@@ -150,7 +168,7 @@ const ProjectCreateModal = () => {
             onClick={handleSubmit}
             disabled={loading}
           >
-            {loading ? "Creating..." : "Create"}
+            {loading ? "Creating..." : "Update"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -158,4 +176,4 @@ const ProjectCreateModal = () => {
   );
 };
 
-export default ProjectCreateModal;
+export default ProjectEditModal;

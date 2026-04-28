@@ -31,9 +31,12 @@ const router = createBrowserRouter([
             path: ":organizationSlug",
             element: <Organization.OrganizationPage />,
           },
+          {
+            path: ":orgSlug/projects/:projSlug",
+            element: <span>This is the Dynamic Project Page</span>,
+          },
         ],
       },
-      { path: "project", element: <span>Project Page</span> },
       { path: "task", element: <span>Task Page</span> },
       {
         path: "profile",

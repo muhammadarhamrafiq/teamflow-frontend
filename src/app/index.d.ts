@@ -92,3 +92,21 @@ interface ProjectInput {
   description?: string;
   dueDate?: Date;
 }
+
+type TASK_STATUS =
+  | "BACKLOG"
+  | "BLOCKED"
+  | "CANCELLED"
+  | "DONE"
+  | "IN_PROGRESS"
+  | "IN_REVIEW"
+  | "TODO";
+
+interface ProjectContextType {
+  id: string;
+  slug: string;
+  name: string;
+  status: PROJECT_STATUS;
+  orgId: string;
+  myRole: USER_ROLE;
+}

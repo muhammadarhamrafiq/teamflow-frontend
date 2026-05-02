@@ -96,16 +96,17 @@ const InvitatedUser = ({ invitation }: { invitation: Invitation }) => {
   }
 
   return (
-    <div className="flex items-center gap-1 mt-2">
+    <div className="flex items-center gap-2 mt-2">
       <Avatar
         avatar={invitation.avatarUrl || ""}
         size="sm"
         iconVariant="USER"
       />
       <div className="flex justify-between w-full">
-        <h1 className="text-lg font-semibold">{invitation.name}</h1>
+        <h1 className="text-md font-semibold capitalize">{invitation.name}</h1>
         <Button
           variant={"outline"}
+          size={"xs"}
           className="cursor-pointer border-destructive text-destructive hover:text-destructive hover:scale-98"
           onClick={handleCancellation}
         >

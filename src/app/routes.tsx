@@ -1,6 +1,12 @@
 import DashboardLayout from "@/shared/components/Layout/DashboardLayout";
 import { createBrowserRouter } from "react-router";
-import { Account, LandingPage, Organization, Profile } from "../features";
+import {
+  Account,
+  LandingPage,
+  Organization,
+  Profile,
+  Project,
+} from "../features";
 import ProtectedRoute from "./providers/ProtectedRoute";
 
 const router = createBrowserRouter([
@@ -33,7 +39,7 @@ const router = createBrowserRouter([
           },
           {
             path: ":orgSlug/projects/:projSlug",
-            element: <span>This is the Dynamic Project Page</span>,
+            element: <Project.ProjectPage />,
           },
         ],
       },

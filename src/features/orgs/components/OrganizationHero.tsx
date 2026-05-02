@@ -66,6 +66,7 @@ const OrganizationHero = () => {
         <div className="flex justify-between">
           <div>
             <InlineEditField
+              className="text-3xl font-bold leading-tight tracking-tight"
               value={organization.name}
               onSave={(value) => handleUpdate({ name: value })}
               disabled={organization.myRole === "OWNER" ? loading : true}
@@ -75,7 +76,7 @@ const OrganizationHero = () => {
         </div>
 
         <InlineEditField
-          className="max-w-160"
+          className="max-w-160 text-muted-foreground"
           value={organization.description || "No Description Available"}
           onSave={(value) => handleUpdate({ description: value })}
           variant="TEXTAREA"

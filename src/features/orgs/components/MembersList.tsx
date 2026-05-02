@@ -58,10 +58,14 @@ const Member = ({ member }: { member: Membership }) => {
       <Avatar avatar={member.avatarUrl || ""} size="md" iconVariant="USER" />
       <div className="w-full">
         <div className="flex w-full justify-between text-sm font-semibold">
-          <h3>{member.name} </h3>
+          <div>
+            <h3 className="capitalize">{member.name} </h3>
+            <h4 className="text-xs text-muted-foreground font-light">
+              {member.email}
+            </h4>
+          </div>
           <RoleBadge role={member.role} userId={member.userId} />
         </div>
-        <h4 className="text-xs">{member.email}</h4>
       </div>
     </div>
   );
@@ -70,8 +74,6 @@ const Member = ({ member }: { member: Membership }) => {
 const RoleBadge = ({ role, userId }: { role: USER_ROLE; userId: string }) => {
   const [loading, setLoading] = useState(false);
   const { myRole, id } = useOrganizationContext();
-
-  console.log({ myRole, id });
 
   const updateMutation = useUpdateMemberShip();
   const deleteMutation = useRemoveMembership();

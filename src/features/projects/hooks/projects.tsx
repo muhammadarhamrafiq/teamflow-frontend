@@ -123,7 +123,7 @@ export const useUpdateProjectStatus = () => {
       return res;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["Projects"] });
+      queryClient.invalidateQueries({ queryKey: ["Project"] });
     },
   });
 };

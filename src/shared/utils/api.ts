@@ -1,4 +1,3 @@
-import type { InternalAxiosRequestConfig } from "axios";
 import axios, { AxiosError } from "axios";
 
 declare module "axios" {
@@ -41,22 +40,13 @@ export const apiHandler = <T, A extends unknown[] = []>(
 const apiServer = import.meta.env.VITE_SERVER_URL;
 
 const api = axios.create({
+  baseURL: apiServer,
   withCredentials: true,
 });
 
 const refreshApi = axios.create({
   baseURL: apiServer,
   withCredentials: true,
-});
-
-/**
- * Request interceptor: adds the base url
- */
-api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  if (config.url && !config.url.startsWith("http")) {
-    config.url = `${apiServer}${config.url}`;
-  }
-  return config;
 });
 
 /**

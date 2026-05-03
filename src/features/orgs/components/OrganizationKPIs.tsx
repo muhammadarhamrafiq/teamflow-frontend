@@ -39,9 +39,9 @@ const KPI_CONFIG: Record<KPIKey, { label: string; description: string }> = {
 const OrganizationKPIs = ({ kpis }: OrganizationKPIsProps) => {
   const entries = Object.entries(kpis) as [KPIKey, number][];
   return (
-    <div className="mx-4 md:mx-8 grid grid-cols-2 gap-2 mt-1 md:gap-4 md:mt-2 lg:grid-cols-4">
+    <div className="md:grid md:grid-cols-2 gap-2 mt-1 md:gap-4 md:mt-2 lg:grid-cols-4">
       {entries.map(([key, value]) => (
-        <Card key={key} className="w-full">
+        <Card key={key} className="w-full mb-2 md:mb-0">
           <CardHeader>
             <CardDescription>{KPI_CONFIG[key].description}</CardDescription>
             <CardTitle>{KPI_CONFIG[key].label}</CardTitle>

@@ -55,7 +55,7 @@ const OrganizationHero = () => {
 
   return (
     <>
-      <div className="mx-4 md:mx-8 pb-4">
+      <div className="pb-12">
         <Avatar
           className="float-left mr-4"
           avatar={organization.logoUrl}

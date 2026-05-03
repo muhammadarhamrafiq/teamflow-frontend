@@ -67,6 +67,13 @@ export interface PaginatedWithSearch {
   page?: number;
 }
 
+export interface PaginationResponse {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+}
+
 export interface Invitation {
   id: string;
   name: string;
@@ -107,6 +114,56 @@ interface ProjectContextType {
   slug: string;
   name: string;
   status: PROJECT_STATUS;
-  orgId: string;
-  myRole: USER_ROLE;
+}
+
+interface TaskBase {
+  id: string;
+  title: string;
+  description: string | null;
+  status: TASK_STATUS;
+  assigneeId: string | null;
+  dueDate: Date | null;
+  startDate: Date | null;
+  projectId: string;
+}
+
+interface CreateTaskPayload {
+  title: string;
+  description?: string;
+  assigneeId?: string;
+  dueDate?: Date;
+  startDate?: Date;
+}
+
+interface Assignee {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl: string | null;
+}
+
+interface TaskWithAssignee extends Omit<TaskBase, "assigneeId", "projectId"> {
+  assignee: Assignee | null;
+}
+
+interface TaskWithFullDetails extends Omit<
+  TaskBase,
+  "assigneeId",
+  "projectId"
+> {
+  assignee: Assignee | null;
+  project: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+
+  commentsCount: 0;
+  allowedActions: TASK_STATUS[];
+}
+
+interface TaskWithUpdate {
+  id: string;
+  title: string;
+  updatedAt: Date | null;
 }

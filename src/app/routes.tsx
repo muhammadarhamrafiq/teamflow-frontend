@@ -1,3 +1,4 @@
+import { OrganizationProvider } from "@/features/orgs/providers/organizationProvider";
 import DashboardLayout from "@/shared/components/Layout/DashboardLayout";
 import { createBrowserRouter } from "react-router";
 import {
@@ -6,6 +7,7 @@ import {
   Organization,
   Profile,
   Project,
+  Tasks,
 } from "../features";
 import ProtectedRoute from "./providers/ProtectedRoute";
 
@@ -31,10 +33,11 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <span>This is Dashboard</span> },
       {
         path: "orgs",
+        element: <OrganizationProvider />,
         children: [
           { path: "add", element: <Organization.AddOrganization /> },
           {
-            path: ":organizationSlug",
+            path: ":orgSlug",
             element: <Organization.OrganizationPage />,
           },
           {
@@ -43,7 +46,7 @@ const router = createBrowserRouter([
           },
         ],
       },
-      { path: "task", element: <span>Task Page</span> },
+      { path: "projects/:projSlug/tasks/:taskId", element: <Tasks.TaskPage /> },
       {
         path: "profile",
         children: [

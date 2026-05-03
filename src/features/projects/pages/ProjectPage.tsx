@@ -1,5 +1,5 @@
 import type { TASK_STATUS } from "@/app";
-import { useOrganization } from "@/features/orgs/hooks/useOrganization";
+import { useOrganizationContext } from "@/features/orgs/context/organizationContext";
 import {
   Card,
   CardContent,
@@ -59,19 +59,12 @@ const statusPillClass: Record<string, string> = {
 };
 
 const ProjectPage = () => {
-  const { projSlug, orgSlug } = useParams();
+  const { projSlug } = useParams();
+  const { id: orgId } = useOrganizationContext();
 
-  const {
-    organization,
-    loading: orgLoading,
-    error: orgError,
-  } = useOrganization(orgSlug ?? "");
-  const { project, loading, error } = useGetProject(
-    organization?.id ?? "",
-    projSlug ?? "",
-  );
+  const { project, loading, error } = useGetProject(orgId, projSlug ?? "");
 
-  if (loading || orgLoading)
+  if (loading)
     return (
       <div className="flex items-center justify-center py-12">
         <svg
@@ -98,7 +91,7 @@ const ProjectPage = () => {
       </div>
     );
 
-  if (error || orgError || !project || !organization)
+  if (error || !project)
     return (
       <div className="mx-4 md:mx-8 py-6">
         <p className="text-sm text-red-600 mb-3">
@@ -118,17 +111,16 @@ const ProjectPage = () => {
   return (
     <ProjectProvider
       project={{
-        orgId: organization.id,
         id: project.id,
         name: project.name,
         slug: project.slug,
         status: project.status,
-        myRole: organization.myRole,
       }}
     >
+      {/* Heading */}
       <div className="mx-4 md:mx-8 lg:flex gap-1 md:gap-2 mt-2 md:mt-4 items-center">
         <div className="flex items-center gap-3">
-          <h2 className="text-3xl font-bold leading-tight tracking-tight">
+          <h2 className="text-3xl font-bold leading-tight tracking-tight capitalize">
             {project.name}
           </h2>
           <span
@@ -147,7 +139,9 @@ const ProjectPage = () => {
       <p className="mx-4 md:mx-8 max-w-160 text-muted-foreground text-sm">
         {project.description}
       </p>
-      <div className="mx-4 md:mx-8 grid grid-cols-2 gap-2 mt-1 md:gap-4 md:mt-2 lg:grid-cols-4">
+
+      {/* Task Cards */}
+      <div className="mx-4 md:mx-8 grid grid-cols-2 gap-2 mt-2 md:gap-4 md:mt-4 lg:grid-cols-4">
         {statusesOrder
           .filter((k) => project.tasksCounts && k in project.tasksCounts)
           .map((key) => {

@@ -27,7 +27,7 @@ export const createTask = apiHandler(
 
 interface GetTasksRespone {
   message: string;
-  tasks: TaskWithAssignee;
+  tasks: TaskWithAssignee[];
   pagination: PaginationResponse;
 }
 

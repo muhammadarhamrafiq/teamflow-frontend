@@ -16,9 +16,16 @@ interface DatePickerProps {
   onChange: (date: Date | null) => void;
   className?: string;
   error?: string;
+  label: string;
 }
 
-function DatePicker({ date, onChange, className, error }: DatePickerProps) {
+function DatePicker({
+  date,
+  onChange,
+  className,
+  error,
+  label,
+}: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -32,7 +39,7 @@ function DatePicker({ date, onChange, className, error }: DatePickerProps) {
           )}
         >
           <HugeiconsIcon icon={Calendar01Icon} />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? format(date, "PPP") : <span>{label}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

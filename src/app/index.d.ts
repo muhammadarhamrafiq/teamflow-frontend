@@ -142,14 +142,13 @@ interface Assignee {
   avatarUrl: string | null;
 }
 
-interface TaskWithAssignee extends Omit<TaskBase, "assigneeId", "projectId"> {
+interface TaskWithAssignee extends Omit<TaskBase, "assigneeId" | "projectId"> {
   assignee: Assignee | null;
 }
 
 interface TaskWithFullDetails extends Omit<
   TaskBase,
-  "assigneeId",
-  "projectId"
+  "assigneeId" | "projectId"
 > {
   assignee: Assignee | null;
   project: {
@@ -166,4 +165,11 @@ interface TaskWithUpdate {
   id: string;
   title: string;
   updatedAt: Date | null;
+}
+
+interface TaskContextType {
+  projectId: string;
+  id: string;
+  myRole: USER_ROLE;
+  taskStatus: TASK_STATUS;
 }

@@ -148,6 +148,7 @@ const ProjectEditModal = ({ project }: ProjectEditModalInput) => {
             error={inputErrors.description}
           />
           <DatePicker
+            label="Pick a due date"
             date={dueDate}
             onChange={(date) => setDueDate(date)}
             className="w-full mt-2"

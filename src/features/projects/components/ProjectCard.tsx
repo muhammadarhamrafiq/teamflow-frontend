@@ -30,7 +30,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           to={`/orgs/${orgSlug}/projects/${project.slug}`}
           className="flex-1"
         >
-          <h3 className="text-lg font-semibold capitalize flex items-center">
+          <h3 className="text-md font-semibold capitalize flex items-center">
             {project.name}
             <HugeiconsIcon icon={Link06Icon} size={16} />
           </h3>

@@ -1,5 +1,4 @@
-import type { PROJECT_STATUS } from "@/app";
-import { useOrganizationContext } from "@/features/orgs/context/organizationContext";
+import type { TASK_STATUS } from "@/app";
 import {
   Select,
   SelectContent,
@@ -9,47 +8,44 @@ import {
 } from "@/shared/components/ui/select";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useProjectContext } from "../context/projectContext";
-import { useUpdateProjectStatus } from "../hooks/projects";
-import ProjectStatusBadge from "./ProjectStatusBadge";
+import { useTaskContext } from "../context/taskContest";
+import { useUpdateTaskStatus } from "../hooks/tasks";
+import TaskStatusBadge from "./TaskStatusBadge";
 
-const UpdateProjectStatus = ({
+const TaskUpdateStatus = ({
   availableActions,
 }: {
-  availableActions: PROJECT_STATUS[];
+  availableActions: TASK_STATUS[];
 }): React.ReactNode => {
-  const { id: orgId, myRole } = useOrganizationContext();
-  const { status, id } = useProjectContext();
-  const actions = Array.from(new Set([status, ...availableActions]));
+  const { id, projectId, taskStatus } = useTaskContext();
+  const actions = Array.from(new Set([taskStatus, ...availableActions]));
   const canUpdateStatus = availableActions.length > 0;
   const [loading, setLoading] = useState(false);
 
-  const updateStatusMutation = useUpdateProjectStatus();
+  const updateStatusMutation = useUpdateTaskStatus();
 
-  if (myRole === "MEMBER") return <ProjectStatusBadge status={status} />;
-
-  async function handleUpdateStatus(newStatus: PROJECT_STATUS) {
+  async function handleUpdateStatus(newStatus: TASK_STATUS) {
     setLoading(false);
 
     const res = await updateStatusMutation.mutateAsync({
-      orgId,
-      projId: id,
+      taskId: id,
+      projectId,
       status: newStatus,
     });
 
     if (res.error) {
       setLoading(false);
-      toast.error(res.error || "Failed to update project status");
+      toast.error(res.error || "Failed to update task status");
       return;
     }
 
-    toast.success("Project status updated successfully");
+    toast.success("Task status updated successfully");
     setLoading(false);
   }
 
   return (
     <Select
-      value={status}
+      value={taskStatus}
       disabled={!canUpdateStatus || loading}
       onValueChange={handleUpdateStatus}
     >
@@ -63,7 +59,7 @@ const UpdateProjectStatus = ({
             value={action}
             disabled={action === status || !availableActions.includes(action)}
           >
-            <ProjectStatusBadge status={action} />
+            <TaskStatusBadge status={action} />
           </SelectItem>
         ))}
       </SelectContent>
@@ -71,4 +67,4 @@ const UpdateProjectStatus = ({
   );
 };
 
-export default UpdateProjectStatus;
+export default TaskUpdateStatus;

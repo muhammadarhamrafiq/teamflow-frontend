@@ -46,7 +46,7 @@ const router = createBrowserRouter([
           },
         ],
       },
-      { path: "projects/:projSlug/tasks/:taskId", element: <Tasks.TaskPage /> },
+      { path: "/tasks/:taskId", element: <Tasks.TaskPage /> },
       {
         path: "profile",
         children: [

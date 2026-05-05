@@ -26,10 +26,12 @@ const ProjectsComponent = () => {
   );
 
   return (
-    <div className="mx-4 md:mx-8 mt-2 md:mt-4 mb-4">
+    <div className="mt-2 md:mt-4 mb-4">
       {/* Heading */}
       <div className="md:flex w-full justify-between">
-        <h2 className="text-md font-bold">Projects</h2>
+        <h2 className="text-lg font-bold leading-tight tracking-tight capitalize">
+          Projects
+        </h2>
         <div className="my-2 flex gap-1">
           {/* Search Bar */}
           <SearchBar

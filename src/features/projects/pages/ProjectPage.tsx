@@ -1,5 +1,6 @@
 import type { TASK_STATUS } from "@/app";
 import { useOrganizationContext } from "@/features/orgs/context/organizationContext";
+import TasksComponent from "@/features/tasks/components/TasksComponent";
 import {
   Card,
   CardContent,
@@ -49,13 +50,11 @@ const statusesOrder: Array<TASK_STATUS | "total"> = [
 ];
 
 const statusPillClass: Record<string, string> = {
-  TODO: "bg-gray-100 text-gray-800",
-  IN_PROGRESS: "bg-blue-100 text-blue-800",
-  IN_REVIEW: "bg-amber-100 text-amber-800",
-  DONE: "bg-green-100 text-green-800",
-  BACKLOG: "bg-violet-100 text-violet-800",
-  BLOCKED: "bg-red-100 text-red-800",
-  CANCELLED: "bg-stone-100 text-stone-800",
+  PLANNING: "bg-blue-100 text-blue-800",
+  ACTIVE: "bg-green-100 text-green-800",
+  ON_HOLD: "bg-yellow-100 text-yellow-800",
+  COMPLETED: "bg-gray-100 text-gray-800",
+  ARCHIVED: "bg-red-100 text-red-800",
 };
 
 const ProjectPage = () => {
@@ -168,6 +167,7 @@ const ProjectPage = () => {
             );
           })}
       </div>
+      <TasksComponent />
     </ProjectProvider>
   );
 };

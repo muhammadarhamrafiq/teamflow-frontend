@@ -1,5 +1,5 @@
-import { useOrganizationContext } from "@/features/orgs/context/organizationContext";
-import { useCreateProject } from "@/features/projects/hooks/projects";
+import type { Assignee } from "@/app";
+import { useProjectContext } from "@/features/projects/context/projectContext";
 import DatePicker from "@/shared/components/DatePicker";
 import DescriptionInput from "@/shared/components/DescriptionInput";
 import InputField from "@/shared/components/InputField";
@@ -17,24 +17,58 @@ import { Add01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useCreateTask } from "../hooks/tasks";
+import AssigneePicker from "./AssigneePicker";
 
 interface InputErrors {
-  name?: string;
+  title?: string;
   description?: string;
+  startDate?: string;
   dueDate?: string;
 }
 
-const ProjectCreateModal = () => {
-  const [name, setName] = useState("");
+function validate(
+  title: string,
+  description: string,
+  startDate: Date | null,
+  dueDate: Date | null,
+) {
+  const errors: InputErrors = {};
+
+  if (!title) errors.title = "Valid Title is Required";
+  else if (title.length < 3 || title.length > 100)
+    errors.title = "Title of task must contain 3 - 100 characters";
+
+  if (description && (description.length < 10 || description.length > 500))
+    errors.description = "Description should contain 10 - 500 characters";
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (startDate && startDate < today)
+    errors.startDate = "Start date cannot be in the past";
+
+  if (dueDate && dueDate < today)
+    errors.dueDate = "Due date cannot be in the past";
+  else if (startDate && dueDate && startDate > dueDate)
+    errors.dueDate = "Due date cannot be before start date";
+
+  return errors;
+}
+
+const TaskCreateModal = () => {
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [assignee, setAssignee] = useState<Assignee | null>(null);
   const [dueDate, setDueDate] = useState<Date | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [startDate, setStartDate] = useState<Date | null>(null);
   const [inputErrors, setInputErrors] = useState<InputErrors>({});
 
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const createMutation = useCreateProject();
-  const { id: orgId } = useOrganizationContext();
+  const createMutation = useCreateTask();
+  const { id: projectId } = useProjectContext();
 
   function handleModal(open: boolean) {
     if (open) {
@@ -43,33 +77,18 @@ const ProjectCreateModal = () => {
     }
 
     setIsOpen(false);
-    setName("");
+    setTitle("");
     setDescription("");
     setDueDate(null);
+    setStartDate(null);
+    setAssignee(null);
     setInputErrors({});
   }
 
-  function validate() {
-    const errors: InputErrors = {};
-
-    if (!name) errors.name = "Valid Name is Required";
-    else if (name.length < 3 || name.length > 25)
-      errors.name = "Name of project must contain 3 - 25 characters";
-
-    if (description && (description.length < 10 || description.length > 500))
-      errors.description = "Description should contain 10 - 500 characters";
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (dueDate && dueDate < today) {
-      errors.dueDate = "Due date cannot be in the past";
-    }
-
-    return errors;
-  }
-
   async function handleSubmit() {
-    const errors = validate();
+    if (loading) return;
+
+    const errors = validate(title, description, startDate, dueDate);
     if (Object.keys(errors).length > 0) {
       setInputErrors(errors);
       return;
@@ -78,23 +97,25 @@ const ProjectCreateModal = () => {
     setLoading(true);
 
     const res = await createMutation.mutateAsync({
-      orgId: orgId,
-      project: {
-        name,
+      projectId: projectId,
+      payload: {
+        title,
         description: description.length > 0 ? description : undefined,
-        dueDate: dueDate ? dueDate : undefined,
+        assigneeId: assignee ? assignee.id : undefined,
+        dueDate: dueDate ?? undefined,
+        startDate: startDate ?? undefined,
       },
     });
 
     if (res.error || !res.data) {
-      toast.error(res.error || "Something Went wrong");
+      toast.error(res.error || "Something went wrong");
       setLoading(false);
       return;
     }
 
     setLoading(false);
     handleModal(false);
-    toast.success("Project created successfully");
+    toast.success("Task created successfully");
   }
 
   return (
@@ -104,40 +125,55 @@ const ProjectCreateModal = () => {
           <HugeiconsIcon icon={Add01Icon} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-sm">
+      {/* Modal content goes here */}
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create New Project</DialogTitle>
+          <DialogTitle>Create New Task</DialogTitle>
           <DialogDescription>
-            Enter the following Details to create a new Project
+            Enter the following Details to create new task
           </DialogDescription>
         </DialogHeader>
         <div>
           <InputField
             className="w-full"
-            label="Project Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter project name"
-            error={inputErrors.name}
-            disabled={loading}
+            label="Task Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter the title for the task"
+            error={inputErrors.title}
           />
+
           <DescriptionInput
             className="w-full mt-2"
-            label="Project Description"
+            label="Task Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter project description"
-            disabled={loading}
+            placeholder="Enter the description for the task"
             error={inputErrors.description}
           />
+
+          <DatePicker
+            date={startDate}
+            label="Pick a start date"
+            onChange={(date) => setStartDate(date)}
+            className="w-full mt-2"
+            error={inputErrors.startDate}
+          />
+
           <DatePicker
             date={dueDate}
+            label="Pick a due date"
             onChange={(date) => setDueDate(date)}
             className="w-full mt-2"
             error={inputErrors.dueDate}
-            label="Pick a due date"
+          />
+
+          <AssigneePicker
+            value={assignee}
+            onChange={(assignee) => setAssignee(assignee)}
           />
         </div>
+
         <DialogFooter>
           <Button
             className="cursor-pointer"
@@ -160,4 +196,4 @@ const ProjectCreateModal = () => {
   );
 };
 
-export default ProjectCreateModal;
+export default TaskCreateModal;

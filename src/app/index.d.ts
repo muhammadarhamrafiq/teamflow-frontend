@@ -173,3 +173,21 @@ interface TaskContextType {
   myRole: USER_ROLE;
   taskStatus: TASK_STATUS;
 }
+
+interface Author {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl: string | null;
+  byMe: boolean;
+}
+
+interface Comment {
+  id: string;
+  message: string;
+  authorId: string;
+}
+
+interface CommentWithAuthor extends Omit<Comment, "authorId"> {
+  author: Author;
+}

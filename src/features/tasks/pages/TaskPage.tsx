@@ -1,4 +1,5 @@
 import type { USER_ROLE } from "@/app";
+import Comments from "@/features/comments/components/Comments";
 import { ArrowLeft02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, useLocation, useParams } from "react-router";
@@ -53,6 +54,7 @@ const TaskPage = () => {
         status={task.status}
         availableActions={task.allowedActions}
       />
+      <Comments />
     </TaskProvider>
   );
 };

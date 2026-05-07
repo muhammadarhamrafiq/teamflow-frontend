@@ -83,3 +83,13 @@ export const resetPassword = apiHandler(
     return res.data;
   },
 );
+
+export const updateEmail = apiHandler(async (token: string) => {
+  const res = await api.patch(
+    `/users/password?token=${token}`,
+    {},
+    { skipAuth: true },
+  );
+
+  return res;
+});

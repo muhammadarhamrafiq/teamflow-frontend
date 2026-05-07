@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       { path: "register", element: <Account.SignUp /> },
       { path: "login", element: <Account.SignIn /> },
       { path: "reset-password", element: <Account.ForgotPassword /> },
-      { path: "verify-email", element: "Verify Email Page" },
+      { path: "verify-email", element: <Account.VerifyEmail /> },
     ],
   },
   {

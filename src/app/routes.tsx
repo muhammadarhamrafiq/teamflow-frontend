@@ -1,5 +1,6 @@
 import { OrganizationProvider } from "@/features/orgs/providers/organizationProvider";
 import DashboardLayout from "@/shared/components/Layout/DashboardLayout";
+import NotFoundPage from "@/shared/components/NotFoundPage";
 import { createBrowserRouter } from "react-router";
 import {
   Account,
@@ -17,10 +18,12 @@ const router = createBrowserRouter([
     path: "/account",
     element: <Account.Layout />,
     children: [
+      { index: true, element: <NotFoundPage /> },
       { path: "register", element: <Account.SignUp /> },
       { path: "login", element: <Account.SignIn /> },
       { path: "reset-password", element: <Account.ForgotPassword /> },
       { path: "verify-email", element: <Account.VerifyEmail /> },
+      { path: "*", element: <NotFoundPage /> },
     ],
   },
   {
@@ -44,6 +47,10 @@ const router = createBrowserRouter([
             path: ":orgSlug/projects/:projSlug",
             element: <Project.ProjectPage />,
           },
+          {
+            path: "*",
+            element: <NotFoundPage />,
+          },
         ],
       },
       { path: "/tasks/:taskId", element: <Tasks.TaskPage /> },
@@ -55,6 +62,7 @@ const router = createBrowserRouter([
           { path: "update-name", element: <Profile.UpdateName /> },
           { path: "update-email", element: <Profile.UpdateEmail /> },
           { path: "reset-password", element: <Profile.ResetPassword /> },
+          { path: "*", element: <NotFoundPage /> },
         ],
       },
     ],
@@ -62,6 +70,7 @@ const router = createBrowserRouter([
   { path: "/term-and-conditions", element: "Terms And Condition Page" },
   { path: "/privacy-policy", element: "Privacy Policy Page" },
   { path: "/contact-us", element: "Contact Us Page" },
+  { path: "*", element: <NotFoundPage /> },
 ]);
 
 export default router;

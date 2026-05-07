@@ -119,10 +119,10 @@ const RoleBadge = ({ role, userId }: { role: USER_ROLE; userId: string }) => {
     return (
       <span
         className={clsx(
-          "border px-2 py-px text-xs rounded-full",
-          role === "OWNER" && "border-primary/60 text-primary",
-          role === "ADMIN" && "border-foreground/60 text-foreground",
-          role === "MEMBER" && "border-accent/60 text-accent-foreground",
+          "border px-2 py-px text-xs rounded-full h-fit",
+          role === "OWNER" && "border-primary text-primary",
+          role === "ADMIN" && "border-foreground text-foreground",
+          role === "MEMBER" && "border-muted-foreground text-muted-foreground",
         )}
       >
         {role}

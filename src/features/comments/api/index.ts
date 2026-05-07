@@ -32,7 +32,7 @@ export const getComments = apiHandler(
 );
 
 export const deleteComment = apiHandler(
-  async (commentId: string, taskId: string) => {
+  async (taskId: string, commentId: string) => {
     const res = await api.delete(`/tasks/${taskId}/comments/${commentId}`);
     return res.data;
   },

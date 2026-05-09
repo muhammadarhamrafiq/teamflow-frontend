@@ -10,24 +10,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
+import useInfiniteScroll from "@/shared/hooks/use-infinite-scroll";
 import {
   MailAccount01FreeIcons,
   Sent02Icon,
   User,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useOrganizationContext } from "../context/organizationContext";
 import { useCreateInvite, useGetCandidates } from "../hooks/useInvites";
 
 const CandidateList = ({ search }: { search: string }) => {
-  // TODO: USE THIS PAGINATION
-  const limit = 20;
-  const page = 1;
+  const pageSize = 20;
+  const limit = pageSize;
   const { id: orgId } = useOrganizationContext();
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState<Candidate[]>([]);
 
-  const { candidates, error, loading } = useGetCandidates({
+  const { candidates, pagination, error, loading } = useGetCandidates({
     orgId,
     search,
     page,
@@ -36,9 +38,40 @@ const CandidateList = ({ search }: { search: string }) => {
 
   if (error) toast.error(error);
 
-  if (loading) return <SkeletonList count={4} />;
+  useEffect(() => {
+    setPage(1);
+    setItems([]);
+  }, [orgId, search]);
 
-  if (error)
+  useEffect(() => {
+    if (!candidates) return;
+    setItems((prev) => (page === 1 ? candidates : [...prev, ...candidates]));
+  }, [candidates, page]);
+
+  const hasMore = pagination
+    ? pagination.page < pagination.totalPages
+    : (candidates?.length ?? 0) === pageSize;
+  const handleLoadMore = useCallback(() => {
+    if (loading || !hasMore) return;
+    setPage((prev) => prev + 1);
+  }, [hasMore, loading]);
+
+  const sentinelRef = useInfiniteScroll({
+    hasMore,
+    isLoading: loading,
+    onLoadMore: handleLoadMore,
+  });
+
+  if (!search)
+    return (
+      <div className="rounded-lg border border-border bg-background/60 p-4 text-sm text-muted-foreground">
+        Search by email to see candidates.
+      </div>
+    );
+
+  if (loading && items.length === 0) return <SkeletonList count={4} />;
+
+  if (error && items.length === 0)
     return (
       <ErrorState
         title="Unable to load candidates"
@@ -46,7 +79,29 @@ const CandidateList = ({ search }: { search: string }) => {
       />
     );
 
-  return candidates.map((cand) => <Candidate key={cand.id} candidate={cand} />);
+  if (items.length === 0)
+    return (
+      <div className="rounded-lg border border-border bg-background/60 p-4 text-sm text-muted-foreground">
+        No candidates found.
+      </div>
+    );
+
+  return (
+    <>
+      {items.map((cand) => (
+        <Candidate key={cand.id} candidate={cand} />
+      ))}
+      {loading ? <SkeletonList count={2} className="mt-3" /> : null}
+      {error ? (
+        <ErrorState
+          className="mt-3"
+          title="Unable to load more candidates"
+          message="Please try again in a moment."
+        />
+      ) : null}
+      {hasMore ? <div ref={sentinelRef} className="h-1" /> : null}
+    </>
+  );
 };
 
 const Candidate = ({ candidate }: { candidate: Candidate }) => {

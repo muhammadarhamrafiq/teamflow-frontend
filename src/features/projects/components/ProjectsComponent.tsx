@@ -11,21 +11,59 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { useState } from "react";
+import useInfiniteScroll from "@/shared/hooks/use-infinite-scroll";
+import { useCallback, useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
 import ProjectCreateModal from "./ProjectCreateModal";
 
+type ProjectListItem = {
+  id: string;
+  status: PROJECT_STATUS;
+  name: string;
+  description?: string;
+  slug: string;
+  startOn: Date;
+  dueDate?: Date;
+};
+
 const ProjectsComponent = () => {
   const { id: orgId, myRole } = useOrganizationContext();
+  const pageSize = 20;
   const [search, setSearch] = useState("");
   const [projectStatus, setProjectStatus] = useState<
     PROJECT_STATUS | "Default"
   >("Default");
-  const { projects, loading, error } = useGetProjects(
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState<ProjectListItem[]>([]);
+  const { projects, pagination, loading, error } = useGetProjects(
     orgId,
-    { search, limit: 20, page: 1 },
+    { search, limit: pageSize, page },
     projectStatus === "Default" ? undefined : projectStatus,
   );
+
+  useEffect(() => {
+    setPage(1);
+    setItems([]);
+  }, [orgId, search, projectStatus]);
+
+  useEffect(() => {
+    if (!projects) return;
+    setItems((prev) => (page === 1 ? projects : [...prev, ...projects]));
+  }, [projects, page]);
+
+  const hasMore = pagination
+    ? pagination.page < pagination.totalPages
+    : (projects?.length ?? 0) === pageSize;
+  const handleLoadMore = useCallback(() => {
+    if (loading || !hasMore) return;
+    setPage((prev) => prev + 1);
+  }, [hasMore, loading]);
+
+  const sentinelRef = useInfiniteScroll({
+    hasMore,
+    isLoading: loading,
+    onLoadMore: handleLoadMore,
+  });
 
   return (
     <div className="mt-2 md:mt-4 mb-4">
@@ -69,21 +107,32 @@ const ProjectsComponent = () => {
       </div>
 
       <div>
-        {loading ? (
+        {loading && items.length === 0 ? (
           <SkeletonGrid count={6} />
-        ) : error ? (
+        ) : error && items.length === 0 ? (
           <ErrorState
             title="Unable to load projects"
             message="Please refresh the page or adjust your filters."
           />
-        ) : !projects || projects.length === 0 ? (
+        ) : items.length === 0 ? (
           <p className="text-sm text-muted-foreground">No projects found.</p>
         ) : (
-          <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
-            {projects.map((proj) => (
-              <ProjectCard key={proj.id} project={proj} />
-            ))}
-          </div>
+          <>
+            <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+              {items.map((proj) => (
+                <ProjectCard key={proj.id} project={proj} />
+              ))}
+            </div>
+            {loading ? <SkeletonGrid count={3} className="mt-4" /> : null}
+            {error ? (
+              <ErrorState
+                className="mt-4"
+                title="Unable to load more projects"
+                message="Please try again in a moment."
+              />
+            ) : null}
+            {hasMore ? <div ref={sentinelRef} className="h-1" /> : null}
+          </>
         )}
       </div>
     </div>

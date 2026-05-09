@@ -29,6 +29,8 @@ export const useInvites = (
   });
 
   return {
+    invites: query.data?.invites,
+    pagination: query.data?.pagination,
     data: query.data,
     error: query.error,
     loading: query.isLoading,
@@ -96,6 +98,12 @@ export const useGetCandidates = ({
   const [loading, setLoading] = useState(false);
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [pagination, setPagination] = useState<{
+    page: number;
+    limit: number;
+    totalItems: number;
+    totalPages: number;
+  } | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -105,6 +113,8 @@ export const useGetCandidates = ({
       setError(null);
 
       if (search === "") {
+        setCandidates([]);
+        setPagination(null);
         setLoading(false);
         return;
       }
@@ -124,6 +134,7 @@ export const useGetCandidates = ({
       }
 
       setCandidates(res.data.users);
+      setPagination(res.data.pagination ?? null);
       setLoading(false);
     }
 
@@ -137,6 +148,7 @@ export const useGetCandidates = ({
   return {
     loading,
     candidates,
+    pagination,
     error,
   };
 };

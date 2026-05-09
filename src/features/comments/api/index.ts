@@ -1,4 +1,4 @@
-import type { CommentWithAuthor, Paginated } from "@/app";
+import type { CommentWithAuthor, Paginated, PaginationResponse } from "@/app";
 import api, { apiHandler } from "@/shared/utils/api";
 
 interface CreateCommentResponse {
@@ -19,6 +19,7 @@ export const createComment = apiHandler(
 interface GetCommentsResponse {
   message: string;
   comments: CommentWithAuthor[];
+  pagination?: PaginationResponse;
 }
 
 export const getComments = apiHandler(

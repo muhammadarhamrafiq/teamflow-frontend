@@ -29,12 +29,13 @@ export const useGetProjects = (
       if (res.error || !res.data)
         throw new Error(res.error || "Something Went wrong");
 
-      return res.data.projects;
+      return res.data;
     },
   });
 
   return {
-    projects: query.data,
+    projects: query.data?.projects,
+    pagination: query.data?.pagination,
     loading: query.isLoading,
     error: query.error,
     refetch: query.refetch,

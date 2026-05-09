@@ -27,12 +27,13 @@ export const useGetTasks = (
         throw new Error(res.error || "Failed to fetch tasks");
       }
 
-      return res.data.tasks;
+      return res.data;
     },
   });
 
   return {
-    tasks: query.data,
+    tasks: query.data?.tasks,
+    pagination: query.data?.pagination,
     loading: query.isLoading,
     error: query.error,
     refetch: query.refetch,

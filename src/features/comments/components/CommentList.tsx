@@ -1,21 +1,54 @@
+import type { CommentWithAuthor } from "@/app";
 import { useTaskContext } from "@/features/tasks/context/taskContest";
 import AlertDialog from "@/shared/components/AlertDialog";
 import Avatar from "@/shared/components/Avatar";
 import ErrorState from "@/shared/components/ErrorState";
 import { SkeletonCommentList } from "@/shared/components/LoadingStates";
 import { Button } from "@/shared/components/ui/button";
+import useInfiniteScroll from "@/shared/hooks/use-infinite-scroll";
 import { Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useDeleteComment, useGetComments } from "../hooks/comments";
 
 const CommentList = () => {
   const { id: taskId, myRole } = useTaskContext();
-  const { data, loading, error } = useGetComments(taskId, 1, 20);
+  const pageSize = 20;
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState<CommentWithAuthor[]>([]);
+  const { comments, pagination, loading, error } = useGetComments(
+    taskId,
+    page,
+    pageSize,
+  );
 
-  if (loading) return <SkeletonCommentList />;
-  if (error || !data)
+  useEffect(() => {
+    setPage(1);
+    setItems([]);
+  }, [taskId]);
+
+  useEffect(() => {
+    if (!comments) return;
+    setItems((prev) => (page === 1 ? comments : [...prev, ...comments]));
+  }, [comments, page]);
+
+  const hasMore = pagination
+    ? pagination.page < pagination.totalPages
+    : (comments?.length ?? 0) === pageSize;
+  const handleLoadMore = useCallback(() => {
+    if (loading || !hasMore) return;
+    setPage((prev) => prev + 1);
+  }, [hasMore, loading]);
+
+  const sentinelRef = useInfiniteScroll({
+    hasMore,
+    isLoading: loading,
+    onLoadMore: handleLoadMore,
+  });
+
+  if (loading && items.length === 0) return <SkeletonCommentList />;
+  if (error && items.length === 0)
     return (
       <ErrorState
         title="Unable to load comments"
@@ -25,7 +58,7 @@ const CommentList = () => {
 
   return (
     <div className="mt-4">
-      {data.comments.map((comment, index) => (
+      {items.map((comment, index) => (
         <div key={comment.id}>
           {index !== 0 && <span className="block h-8 border-l-2 ml-4" />}
           <div className="flex justify-between border py-2 px-3 rounded bg-accent">
@@ -51,6 +84,15 @@ const CommentList = () => {
           </div>
         </div>
       ))}
+      {loading ? <SkeletonCommentList count={2} className="mt-4" /> : null}
+      {error ? (
+        <ErrorState
+          className="mt-4"
+          title="Unable to load more comments"
+          message="Please try again in a moment."
+        />
+      ) : null}
+      {hasMore ? <div ref={sentinelRef} className="h-1" /> : null}
     </div>
   );
 };

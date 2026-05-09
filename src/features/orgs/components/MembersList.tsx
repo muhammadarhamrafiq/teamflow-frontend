@@ -10,10 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
+import useInfiniteScroll from "@/shared/hooks/use-infinite-scroll";
 import { UserRemove01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import clsx from "clsx";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useOrganizationContext } from "../context/organizationContext";
 import {
@@ -24,14 +25,44 @@ import {
 
 const MemberList = ({ search }: { search?: string }) => {
   const { id } = useOrganizationContext();
-  const { data, loading, error } = useGetMembers(id, {
-    limit: 10,
+  const pageSize = 10;
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState<Membership[]>([]);
+  const { data, pagination, loading, error } = useGetMembers(id, {
+    limit: pageSize,
+    page,
     search,
   });
 
-  if (loading) return <SkeletonList count={4} />;
+  useEffect(() => {
+    setPage(1);
+    setItems([]);
+  }, [id, search]);
 
-  if (error)
+  useEffect(() => {
+    if (!data?.members) return;
+    setItems((prev) =>
+      page === 1 ? data.members : [...prev, ...data.members],
+    );
+  }, [data, page]);
+
+  const hasMore = pagination
+    ? pagination.page < pagination.totalPages
+    : (data?.members.length ?? 0) === pageSize;
+  const handleLoadMore = useCallback(() => {
+    if (loading || !hasMore) return;
+    setPage((prev) => prev + 1);
+  }, [hasMore, loading]);
+
+  const sentinelRef = useInfiniteScroll({
+    hasMore,
+    isLoading: loading,
+    onLoadMore: handleLoadMore,
+  });
+
+  if (loading && items.length === 0) return <SkeletonList count={4} />;
+
+  if (error && items.length === 0)
     return (
       <ErrorState
         title="Unable to load members"
@@ -39,7 +70,7 @@ const MemberList = ({ search }: { search?: string }) => {
       />
     );
 
-  if (!data || data.members.length < 1)
+  if (items.length < 1)
     return (
       <div className="rounded-lg border border-border bg-background/60 p-4 text-sm text-muted-foreground">
         No members found.
@@ -47,8 +78,20 @@ const MemberList = ({ search }: { search?: string }) => {
     );
 
   return (
-    data &&
-    data.members.map((member) => <Member key={member.userId} member={member} />)
+    <>
+      {items.map((member) => (
+        <Member key={member.userId} member={member} />
+      ))}
+      {loading ? <SkeletonList count={2} className="mt-3" /> : null}
+      {error ? (
+        <ErrorState
+          className="mt-3"
+          title="Unable to load more members"
+          message="Please try again in a moment."
+        />
+      ) : null}
+      {hasMore ? <div ref={sentinelRef} className="h-1" /> : null}
+    </>
   );
 };
 

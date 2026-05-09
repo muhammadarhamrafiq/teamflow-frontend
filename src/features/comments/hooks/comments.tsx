@@ -18,6 +18,8 @@ export const useGetComments = (taskId: string, page: number, limit: number) => {
   });
 
   return {
+    comments: query.data?.comments,
+    pagination: query.data?.pagination,
     data: query.data,
     loading: query.isLoading,
     error: query.error,

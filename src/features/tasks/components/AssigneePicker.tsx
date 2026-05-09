@@ -1,4 +1,4 @@
-import type { Assignee } from "@/app";
+import type { Assignee, Membership } from "@/app";
 import { useOrganizationContext } from "@/features/orgs/context/organizationContext";
 import { useGetMembers } from "@/features/orgs/hooks/useMembers";
 import Avatar from "@/shared/components/Avatar";
@@ -16,9 +16,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/shared/components/ui/popover";
+import useInfiniteScroll from "@/shared/hooks/use-infinite-scroll";
 import { ChevronsUpDown } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface AssigneePickerProps {
   value: Assignee | null;
@@ -28,13 +29,42 @@ interface AssigneePickerProps {
 const AssigneePicker = ({ value, onChange }: AssigneePickerProps) => {
   const { id: orgId } = useOrganizationContext();
   const [search, setSearch] = useState<string>("");
-  const { data } = useGetMembers(orgId, {
-    limit: 10,
-    page: 1,
+  const pageSize = 10;
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState<Membership[]>([]);
+  const { data, pagination, loading } = useGetMembers(orgId, {
+    limit: pageSize,
+    page,
     search: search ? search : undefined,
   });
 
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setPage(1);
+    setItems([]);
+  }, [orgId, search]);
+
+  useEffect(() => {
+    if (!data?.members) return;
+    setItems((prev) =>
+      page === 1 ? data.members : [...prev, ...data.members],
+    );
+  }, [data, page]);
+
+  const hasMore = pagination
+    ? pagination.page < pagination.totalPages
+    : (data?.members.length ?? 0) === pageSize;
+  const handleLoadMore = useCallback(() => {
+    if (loading || !hasMore) return;
+    setPage((prev) => prev + 1);
+  }, [hasMore, loading]);
+
+  const sentinelRef = useInfiniteScroll({
+    hasMore,
+    isLoading: loading,
+    onLoadMore: handleLoadMore,
+  });
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -78,29 +108,29 @@ const AssigneePicker = ({ value, onChange }: AssigneePickerProps) => {
             )}
 
             <CommandGroup heading="Members">
-              {data &&
-                data.members.map((member) => {
-                  const isSelected = value?.id === member.userId;
-                  const assignee: Assignee = {
-                    id: member.userId,
-                    name: member.name,
-                    email: member.email,
-                    avatarUrl: member.avatarUrl || null,
-                  };
+              {items.map((member) => {
+                const isSelected = value?.id === member.userId;
+                const assignee: Assignee = {
+                  id: member.userId,
+                  name: member.name,
+                  email: member.email,
+                  avatarUrl: member.avatarUrl || null,
+                };
 
-                  return (
-                    <CommandItem
-                      key={member.userId}
-                      value={`${member.name} ${member.email}`}
-                      onSelect={() => {
-                        onChange(isSelected ? null : assignee);
-                        setOpen(false);
-                      }}
-                    >
-                      <AssigneeItem assignee={assignee} />
-                    </CommandItem>
-                  );
-                })}
+                return (
+                  <CommandItem
+                    key={member.userId}
+                    value={`${member.name} ${member.email}`}
+                    onSelect={() => {
+                      onChange(isSelected ? null : assignee);
+                      setOpen(false);
+                    }}
+                  >
+                    <AssigneeItem assignee={assignee} />
+                  </CommandItem>
+                );
+              })}
+              {hasMore ? <div ref={sentinelRef} className="h-1" /> : null}
             </CommandGroup>
           </CommandList>
         </Command>

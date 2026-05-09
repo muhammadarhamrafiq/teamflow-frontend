@@ -1,5 +1,6 @@
 import type {
   PaginatedWithSearch,
+  PaginationResponse,
   PROJECT_STATUS,
   ProjectInput,
   TASK_STATUS,
@@ -24,6 +25,7 @@ interface GetProjectsResponse {
     startOn: Date;
     dueDate?: Date;
   }>;
+  pagination?: PaginationResponse;
 }
 
 export const getProjects = apiHandler(

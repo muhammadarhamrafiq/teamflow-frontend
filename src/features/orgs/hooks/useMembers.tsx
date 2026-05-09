@@ -25,6 +25,7 @@ export function useGetMembers(
 
   return {
     data: query.data,
+    pagination: query.data?.pagination,
     error: query.error,
     loading: query.isLoading,
     refetch: query.refetch,

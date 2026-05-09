@@ -1,6 +1,8 @@
 import type { TASK_STATUS } from "@/app";
 import { useOrganizationContext } from "@/features/orgs/context/organizationContext";
 import { useProjectContext } from "@/features/projects/context/projectContext";
+import ErrorState from "@/shared/components/ErrorState";
+import { SkeletonGrid } from "@/shared/components/LoadingStates";
 import SearchBar from "@/shared/components/SearchBar";
 import {
   Select,
@@ -68,11 +70,14 @@ const TasksComponent = () => {
       {/* Tasks Cards */}
       <div>
         {loading ? (
-          <p>Loading projects...</p>
+          <SkeletonGrid count={6} />
         ) : error ? (
-          <p className="text-red-500">Error loading projects</p>
+          <ErrorState
+            title="Unable to load tasks"
+            message="Please refresh the page or adjust your filters."
+          />
         ) : !tasks || tasks.length === 0 ? (
-          <p>No projects found.</p>
+          <p className="text-sm text-muted-foreground">No tasks found.</p>
         ) : (
           <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
             {tasks.map((task) => (

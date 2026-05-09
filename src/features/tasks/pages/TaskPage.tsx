@@ -1,5 +1,11 @@
 import type { USER_ROLE } from "@/app";
 import Comments from "@/features/comments/components/Comments";
+import ErrorState from "@/shared/components/ErrorState";
+import {
+  SkeletonCommentList,
+  SkeletonHeader,
+} from "@/shared/components/LoadingStates";
+import { Button } from "@/shared/components/ui/button";
 import { ArrowLeft02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, useLocation, useParams } from "react-router";
@@ -29,9 +35,30 @@ const TaskPage = () => {
 
   const { task, error, loading } = useGetTask(project.id, taskId!);
 
-  if (loading) return <span>Loading</span>;
+  if (loading)
+    return (
+      <div className="mx-4 md:mx-8 py-6">
+        <SkeletonHeader />
+        <SkeletonCommentList className="mt-6" />
+      </div>
+    );
 
-  if (error || !task) return <span>Something Went wrong</span>;
+  if (error || !task)
+    return (
+      <div className="mx-4 md:mx-8 py-6">
+        <ErrorState
+          title="Unable to load task"
+          message="Please refresh the page or return to the project."
+          action={
+            <Button asChild size="sm">
+              <Link to={`/orgs/${org.slug}/projects/${project.slug}`}>
+                Back to project
+              </Link>
+            </Button>
+          }
+        />
+      </div>
+    );
 
   return (
     <TaskProvider

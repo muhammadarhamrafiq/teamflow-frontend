@@ -1,6 +1,8 @@
 import type { PROJECT_STATUS } from "@/app";
 import { useOrganizationContext } from "@/features/orgs/context/organizationContext";
 import { useGetProjects } from "@/features/projects/hooks/projects";
+import ErrorState from "@/shared/components/ErrorState";
+import { SkeletonGrid } from "@/shared/components/LoadingStates";
 import SearchBar from "@/shared/components/SearchBar";
 import {
   Select,
@@ -68,11 +70,14 @@ const ProjectsComponent = () => {
 
       <div>
         {loading ? (
-          <p>Loading projects...</p>
+          <SkeletonGrid count={6} />
         ) : error ? (
-          <p className="text-red-500">Error loading projects</p>
+          <ErrorState
+            title="Unable to load projects"
+            message="Please refresh the page or adjust your filters."
+          />
         ) : !projects || projects.length === 0 ? (
-          <p>No projects found.</p>
+          <p className="text-sm text-muted-foreground">No projects found.</p>
         ) : (
           <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-2">
             {projects.map((proj) => (

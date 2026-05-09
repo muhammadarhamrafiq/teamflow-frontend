@@ -1,5 +1,7 @@
 import type { Membership, USER_ROLE } from "@/app";
 import Avatar from "@/shared/components/Avatar";
+import ErrorState from "@/shared/components/ErrorState";
+import { SkeletonList } from "@/shared/components/LoadingStates";
 import { Button } from "@/shared/components/ui/button";
 import {
   Select,
@@ -27,22 +29,20 @@ const MemberList = ({ search }: { search?: string }) => {
     search,
   });
 
-  if (loading)
-    return (
-      <div className="flex items-center justify-center w-full">Loading</div>
-    );
+  if (loading) return <SkeletonList count={4} />;
 
   if (error)
     return (
-      <div className="flex items-center justify-center w-full">
-        Something Went Wrong
-      </div>
+      <ErrorState
+        title="Unable to load members"
+        message="Please refresh or try again in a moment."
+      />
     );
 
   if (!data || data.members.length < 1)
     return (
-      <div className="flex items-center justify-center w-full">
-        Not Member Found
+      <div className="rounded-lg border border-border bg-background/60 p-4 text-sm text-muted-foreground">
+        No members found.
       </div>
     );
 

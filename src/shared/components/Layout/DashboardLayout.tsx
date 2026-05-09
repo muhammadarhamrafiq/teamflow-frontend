@@ -23,6 +23,8 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router";
 import { toast } from "sonner";
 import Avatar from "../Avatar";
+import ErrorState from "../ErrorState";
+import { SkeletonList } from "../LoadingStates";
 import LogoWithText from "../LogoWithText";
 import OrganizationList from "../OrganizationList";
 import ThemeSwitch from "../ThemeSwitch";
@@ -151,9 +153,15 @@ const UserInvitationSheet = () => {
 const MemberShipInvitationsList = () => {
   const { loading, error, data } = useMembershipInvites();
 
-  if (loading) return <span>Loading...</span>;
+  if (loading) return <SkeletonList count={3} />;
 
-  if (error || !data) return <span>Something Went Wrong</span>;
+  if (error || !data)
+    return (
+      <ErrorState
+        title="Unable to load invitations"
+        message="Please try again in a moment."
+      />
+    );
 
   return (
     <span>

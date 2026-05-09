@@ -4,6 +4,8 @@ import { Link } from "react-router";
 import { toast } from "sonner";
 import Avatar from "./Avatar";
 import DropDown from "./DropDown";
+import ErrorState from "./ErrorState";
+import { SkeletonList } from "./LoadingStates";
 import { SidebarGroup } from "./ui/sidebar";
 
 const OrganizationList = ({ search }: { search: string }) => {
@@ -13,9 +15,16 @@ const OrganizationList = ({ search }: { search: string }) => {
 
   return (
     <SidebarGroup className="px-0">
-      {loading
-        ? "Loading"
-        : organizations.map((org) => <Organization key={org.id} org={org} />)}
+      {loading ? (
+        <SkeletonList count={4} className="px-2" />
+      ) : error ? (
+        <ErrorState
+          title="Unable to load organizations"
+          message="Try again in a moment."
+        />
+      ) : (
+        organizations.map((org) => <Organization key={org.id} org={org} />)
+      )}
     </SidebarGroup>
   );
 };

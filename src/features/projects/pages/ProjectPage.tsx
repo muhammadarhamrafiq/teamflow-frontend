@@ -1,6 +1,13 @@
 import type { TASK_STATUS } from "@/app";
 import { useOrganizationContext } from "@/features/orgs/context/organizationContext";
 import TasksComponent from "@/features/tasks/components/TasksComponent";
+import ErrorState from "@/shared/components/ErrorState";
+import {
+  SkeletonGrid,
+  SkeletonHeader,
+  SkeletonStatGrid,
+} from "@/shared/components/LoadingStates";
+import { Button } from "@/shared/components/ui/button";
 import {
   Card,
   CardContent,
@@ -65,45 +72,25 @@ const ProjectPage = () => {
 
   if (loading)
     return (
-      <div className="flex items-center justify-center py-12">
-        <svg
-          className="w-8 h-8 animate-spin text-primary"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          aria-hidden
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-          ></path>
-        </svg>
+      <div className="mx-4 md:mx-8 py-6">
+        <SkeletonHeader />
+        <SkeletonStatGrid className="mt-6" />
+        <SkeletonGrid count={6} className="mt-6" />
       </div>
     );
 
   if (error || !project)
     return (
       <div className="mx-4 md:mx-8 py-6">
-        <p className="text-sm text-red-600 mb-3">
-          Something went wrong loading this project.
-        </p>
-        <div>
-          <button
-            className="px-3 py-1 rounded bg-primary text-white text-sm"
-            onClick={() => window.location.reload()}
-          >
-            Retry
-          </button>
-        </div>
+        <ErrorState
+          title="Unable to load project"
+          message="Please refresh the page or try again in a moment."
+          action={
+            <Button size="sm" onClick={() => window.location.reload()}>
+              Retry
+            </Button>
+          }
+        />
       </div>
     );
 

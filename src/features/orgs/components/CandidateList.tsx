@@ -1,5 +1,7 @@
 import type { Candidate, USER_ROLE } from "@/app";
 import Avatar from "@/shared/components/Avatar";
+import ErrorState from "@/shared/components/ErrorState";
+import { SkeletonList } from "@/shared/components/LoadingStates";
 import { Button } from "@/shared/components/ui/button";
 import {
   Select,
@@ -34,7 +36,15 @@ const CandidateList = ({ search }: { search: string }) => {
 
   if (error) toast.error(error);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <SkeletonList count={4} />;
+
+  if (error)
+    return (
+      <ErrorState
+        title="Unable to load candidates"
+        message="Please try again in a moment."
+      />
+    );
 
   return candidates.map((cand) => <Candidate key={cand.id} candidate={cand} />);
 };

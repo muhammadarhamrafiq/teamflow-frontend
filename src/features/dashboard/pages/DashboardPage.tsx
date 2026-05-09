@@ -4,6 +4,8 @@ import { Link } from "react-router";
 import { useAuthStore } from "@/app/providers/user";
 import { useOrganizations } from "@/features/orgs/hooks/useOrganization";
 import Avatar from "@/shared/components/Avatar";
+import ErrorState from "@/shared/components/ErrorState";
+import { SkeletonList } from "@/shared/components/LoadingStates";
 import SearchBar from "@/shared/components/SearchBar";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -83,11 +85,12 @@ const DashboardPage = () => {
                 onChange={(event) => setSearch(event.target.value)}
               />
               {loading ? (
-                <p className="text-sm text-muted-foreground">
-                  Loading organizations...
-                </p>
+                <SkeletonList count={4} />
               ) : error ? (
-                <p className="text-sm text-destructive">{error}</p>
+                <ErrorState
+                  title="Unable to load organizations"
+                  message="Please try again in a moment."
+                />
               ) : organizations.length === 0 ? (
                 <div className="rounded-lg border border-border bg-background/70 p-4">
                   <p className="text-sm font-medium text-foreground">

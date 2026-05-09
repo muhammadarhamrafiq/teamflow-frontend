@@ -1,5 +1,7 @@
 import type { Invitation } from "@/app";
 import Avatar from "@/shared/components/Avatar";
+import ErrorState from "@/shared/components/ErrorState";
+import { SkeletonList } from "@/shared/components/LoadingStates";
 import SearchBar from "@/shared/components/SearchBar";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -60,7 +62,15 @@ const InvitesList = ({ search }: { search: string }) => {
 
   if (error) toast.error(error?.message || "Something went wrong");
 
-  if (loading) return <span>Loading</span>;
+  if (loading) return <SkeletonList count={4} />;
+
+  if (error)
+    return (
+      <ErrorState
+        title="Unable to load invitations"
+        message="Please try again in a moment."
+      />
+    );
 
   return (
     <>

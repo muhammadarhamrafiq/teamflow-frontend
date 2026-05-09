@@ -1,3 +1,7 @@
+import {
+  SkeletonGrid,
+  SkeletonHeader,
+} from "@/shared/components/LoadingStates";
 import api, { apiHandler } from "@/shared/utils/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -42,7 +46,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     };
   }, [logout, navigate, setUser]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="mx-auto w-full max-w-5xl px-6 py-12">
+        <SkeletonHeader />
+        <SkeletonGrid count={3} className="mt-6" />
+      </div>
+    );
 
   return <>{children}</>;
 };

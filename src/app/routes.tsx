@@ -40,15 +40,22 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <Dashboard.DashboardPage /> },
       {
         path: "orgs",
+        element: <Organization.OrganizationsPage />,
+      },
+      {
+        path: "orgs/add",
+        element: <Organization.AddOrganization />,
+      },
+      {
+        path: "orgs/:orgSlug",
         element: <OrganizationProvider />,
         children: [
-          { path: "add", element: <Organization.AddOrganization /> },
           {
-            path: ":orgSlug",
+            index: true,
             element: <Organization.OrganizationPage />,
           },
           {
-            path: ":orgSlug/projects/:projSlug",
+            path: "projects/:projSlug",
             element: <Project.ProjectPage />,
           },
           {

@@ -1,6 +1,8 @@
 import { useTaskContext } from "@/features/tasks/context/taskContest";
 import AlertDialog from "@/shared/components/AlertDialog";
 import Avatar from "@/shared/components/Avatar";
+import ErrorState from "@/shared/components/ErrorState";
+import { SkeletonCommentList } from "@/shared/components/LoadingStates";
 import { Button } from "@/shared/components/ui/button";
 import { Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -12,18 +14,21 @@ const CommentList = () => {
   const { id: taskId, myRole } = useTaskContext();
   const { data, loading, error } = useGetComments(taskId, 1, 20);
 
-  if (loading) return <div>Loading...</div>;
-  if (error || !data) return <div>Error loading comments</div>;
+  if (loading) return <SkeletonCommentList />;
+  if (error || !data)
+    return (
+      <ErrorState
+        title="Unable to load comments"
+        message="Please refresh the page or try again in a moment."
+      />
+    );
 
   return (
     <div className="mt-4">
       {data.comments.map((comment, index) => (
-        <>
-          {index != 0 && <span className="block h-8 border-l-2 ml-4" />}
-          <div
-            className="flex justify-between border py-2 px-3 rounded bg-accent"
-            key={comment.id}
-          >
+        <div key={comment.id}>
+          {index !== 0 && <span className="block h-8 border-l-2 ml-4" />}
+          <div className="flex justify-between border py-2 px-3 rounded bg-accent">
             <div className="flex gap-1">
               <Avatar
                 avatar={comment.author.avatarUrl ?? ""}
@@ -44,7 +49,7 @@ const CommentList = () => {
               myRole === "ADMIN" ||
               myRole === "OWNER") && <DeleteComment commentId={comment.id} />}
           </div>
-        </>
+        </div>
       ))}
     </div>
   );

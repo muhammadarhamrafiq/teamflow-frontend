@@ -7,6 +7,7 @@ import NotFoundPage from "@/shared/components/NotFoundPage";
 import { createBrowserRouter } from "react-router";
 import {
   Account,
+  Dashboard,
   LandingPage,
   Organization,
   Profile,
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { path: "dashboard", element: <span>This is Dashboard</span> },
+      { path: "dashboard", element: <Dashboard.DashboardPage /> },
       {
         path: "orgs",
         element: <OrganizationProvider />,

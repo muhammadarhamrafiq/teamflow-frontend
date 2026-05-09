@@ -1,3 +1,6 @@
+import ContactUsPage from "@/features/landing/pages/ContactUsPage";
+import PrivacyPolicyPage from "@/features/landing/pages/PrivacyPolicyPage";
+import TermsAndConditionsPage from "@/features/landing/pages/TermsAndConditionsPage";
 import { OrganizationProvider } from "@/features/orgs/providers/organizationProvider";
 import DashboardLayout from "@/shared/components/Layout/DashboardLayout";
 import NotFoundPage from "@/shared/components/NotFoundPage";
@@ -67,9 +70,9 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "/term-and-conditions", element: "Terms And Condition Page" },
-  { path: "/privacy-policy", element: "Privacy Policy Page" },
-  { path: "/contact-us", element: "Contact Us Page" },
+  { path: "/term-and-conditions", element: <TermsAndConditionsPage /> },
+  { path: "/privacy-policy", element: <PrivacyPolicyPage /> },
+  { path: "/contact-us", element: <ContactUsPage /> },
   { path: "*", element: <NotFoundPage /> },
 ]);
 
